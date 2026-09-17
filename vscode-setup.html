@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Claude to VS Code | CAU AI Workshop</title>
+<meta name="description" content="A picture-by-picture guide to installing VS Code and connecting Claude Code, for the CAU faculty and staff AI workshop.">
+<link rel="icon" href="assets/cau-math-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    --red: #A6192E;
+    --ground: #FBF8F7;
+    --surface: #FFFFFF;
+    --ink: #1F1A1B;
+    --stone: #6B5F61;
+    --blush: #F6E7E4;
+    --line: #E8DAD7;
+    --focus: #1F5FBF;
+    --good: #1E7A46;
+    --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --red: #F07A8B; --ground: #161213; --surface: #211B1C; --ink: #F3ECEB; --stone: #B8ABAD;
+      --blush: #3A2427; --line: #3A3032; --focus: #8AB4FF; --good: #5FD08F; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --red: #F07A8B; --ground: #161213; --surface: #211B1C; --ink: #F3ECEB; --stone: #B8ABAD;
+    --blush: #3A2427; --line: #3A3032; --focus: #8AB4FF; --good: #5FD08F; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 1.125rem; line-height: 1.55; }
+  a { color: var(--red); text-underline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  img, svg { max-width: 100%; }
+  .wrap { max-width: 1120px; margin-inline: auto; padding-inline: 20px; }
+  .wrap > * { min-width: 0; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+  .kicker { font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin: 0 0 .4rem; }
+
+  /* ---------- OS-specific text ---------- */
+  body[data-os="mac"] .win, body[data-os="win"] .mac { display: none; }
+  kbd {
+    font-family: var(--mono); font-size: .82em; font-weight: 700; white-space: nowrap;
+    border: 1.5px solid var(--line); border-bottom-width: 3px; border-radius: 6px; padding: 1px 7px; background: var(--surface);
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar { background: var(--ground); border-bottom: 1px solid var(--line); }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 10px; flex-wrap: wrap; }
+  .logo-plate { background: #FFFFFF; border-radius: 6px; padding: 6px 10px; display: block; line-height: 0; }
+  .logo-plate img { height: 42px; width: auto; }
+  .back { font-weight: 700; text-decoration: none; }
+  .back:hover { text-decoration: underline; }
+
+  /* ---------- Intro ---------- */
+  .intro { padding-block: 40px 8px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
+  .intro h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+  .intro p.lede { margin: .8rem 0 0; max-width: 46ch; color: var(--stone); font-size: 1.2rem; }
+  .need { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .need h2 { font-size: 1.1rem; margin-bottom: 6px; }
+  .need ul { margin: 0; padding-left: 1.1rem; }
+  .need li { margin: 4px 0; }
+  .need li b { color: var(--red); }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; justify-content: space-between; margin-top: 28px; padding-block: 14px; border-block: 1px solid var(--line); }
+  .seg { display: inline-flex; border: 1.5px solid var(--line); border-radius: 99px; padding: 3px; background: var(--surface); }
+  .seg button {
+    font: 700 1rem var(--body); border: 0; background: transparent; color: var(--ink); padding: 6px 16px; border-radius: 99px; cursor: pointer;
+  }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
+  .controls .label { font-weight: 700; margin-right: 10px; }
+  .linkish { font: 700 1rem var(--body); background: none; border: 0; color: var(--red); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 4px; }
+
+  /* ---------- Guide layout ---------- */
+  .guide { display: grid; grid-template-columns: 250px 1fr; gap: 36px; padding-block: 28px 20px; align-items: start; }
+  .rail { position: sticky; top: 16px; }
+  .rail ol { list-style: none; margin: 0; padding: 0; }
+  .rail .phase { font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); margin: 16px 0 4px; }
+  .rail .phase:first-child { margin-top: 0; }
+  .rail button {
+    width: 100%; text-align: left; font: 400 .98rem/1.3 var(--body); color: var(--ink); background: transparent; border: 0; cursor: pointer;
+    display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: center; padding: 6px 8px; border-radius: 8px;
+  }
+  .rail button:hover { background: var(--blush); }
+  .rail button .dot {
+    width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center;
+    font: 700 .78rem var(--mono); color: var(--stone); background: var(--surface);
+  }
+  .rail button[aria-current="step"] { background: var(--blush); font-weight: 700; }
+  .rail button[aria-current="step"] .dot { border-color: var(--red); background: var(--red); color: var(--surface); }
+  .rail button.seen .dot { border-color: var(--red); color: var(--red); }
+
+  .progress { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 18px; }
+  .progress span { display: block; height: 100%; width: 0; background: var(--red); border-radius: 99px; transition: width .35s ease; }
+
+  .step { display: grid; gap: 18px; }
+  .step + .step { margin-top: 56px; }
+  .guide.one-at-a-time .step + .step { margin-top: 0; }
+  .stage {
+    background: #2B2B2B; border-radius: 14px; padding: 10px; box-shadow: 0 14px 34px rgba(30, 10, 12, .18);
+  }
+  .stage svg { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .head { display: grid; gap: 2px; }
+  .count { font: 700 .95rem var(--mono); color: var(--red); margin: 0; }
+  .step h2 { font-size: clamp(1.6rem, 3.4vw, 2.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -.01em; margin-top: 2px; }
+  .do { margin: 4px 0 0; padding-left: 1.4rem; display: grid; gap: 8px; max-width: 64ch; }
+  .do li::marker { font-weight: 700; color: var(--red); }
+  .tip { display: flex; gap: 10px; background: var(--blush); border-radius: 10px; padding: 12px 16px; max-width: 70ch; }
+  .tip b { color: var(--red); white-space: nowrap; }
+  .tip p { margin: 0; }
+
+  .nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+  .nav button {
+    font: 700 1.1rem var(--body); padding: 12px 26px; border-radius: 99px; cursor: pointer; min-width: 140px;
+    border: 2px solid var(--red); background: transparent; color: var(--red);
+  }
+  .nav button.next { background: var(--red); color: var(--surface); }
+  .nav button:disabled { opacity: .35; cursor: default; }
+  .guide:not(.one-at-a-time) .nav, .guide:not(.one-at-a-time) .progress { display: none; }
+
+  .finish { margin-top: 26px; background: var(--surface); border: 2px solid var(--good); border-radius: 12px; padding: 16px 20px; }
+  .finish h3 { color: var(--good); font-size: 1.3rem; }
+  .finish p { margin: 4px 0 0; }
+
+  /* ---------- Help ---------- */
+  .help { padding-block: 40px 60px; border-top: 1px solid var(--line); margin-top: 40px; }
+  .help h2 { font-size: clamp(1.7rem, 3vw, 2.2rem); font-weight: 800; }
+  .help > .wrap > p { color: var(--stone); margin: .5rem 0 1.2rem; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-top: 10px; }
+  summary { cursor: pointer; font-weight: 700; padding: 14px 18px; list-style-position: inside; }
+  details[open] summary { border-bottom: 1px solid var(--line); }
+  details ol, details p { margin: 12px 18px 16px; }
+  details ol { padding-left: 1.2rem; display: grid; gap: 6px; }
+
+  /* ---------- Animated pointer inside the pictures ---------- */
+  .ring { fill: none; stroke: #FFC23D; stroke-width: 4; animation: pulse 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+  .tapdot { fill: #FFC23D; opacity: 0; transform-box: fill-box; transform-origin: center; }
+  @media (prefers-reduced-motion: reduce) { .ring { animation: none; } .progress span { transition: none; } }
+
+  @media (max-width: 900px) {
+    .intro { grid-template-columns: 1fr; gap: 20px; }
+    .guide { grid-template-columns: 1fr; }
+    .rail { position: static; display: none; }
+  }
+  @media print {
+    .topbar, .controls, .rail, .nav, .progress { display: none !important; }
+    .guide { display: block; }
+    .step { break-inside: avoid; margin-top: 24px !important; display: grid !important; }
+    .stage { box-shadow: none; }
+  }
+</style>
+</head>
+<body data-os="mac">
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="logo-plate" href="index.html" aria-label="Workshop home"><img src="assets/cau-math-logo.png" alt="Clark Atlanta University, Department of Mathematical Sciences"></a>
+    <a class="back" href="index.html#setup">Back to the workshop page</a>
+  </div>
+</div>
+
+<header class="wrap intro">
+  <div>
+    <p class="kicker">Picture guide</p>
+    <h1>Connect Claude to VS Code</h1>
+    <p class="lede">Go one step at a time. Each picture shows exactly where to click. The yellow circle marks the spot.</p>
+  </div>
+  <div class="need">
+    <h2>Before you start</h2>
+    <ul>
+      <li><b>A paid Claude plan.</b> Pro or higher. The free plan does not work in VS Code. <a href="https://claude.com/pricing" target="_blank" rel="noopener">See plans</a></li>
+      <li>Your laptop and an internet connection</li>
+      <li>About 15 minutes</li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div><span class="label" id="os-label">My computer is a</span>
+      <span class="seg" role="group" aria-labelledby="os-label">
+        <button type="button" id="os-mac" data-os="mac" aria-pressed="true">Mac</button>
+        <button type="button" id="os-win" data-os="win" aria-pressed="false">Windows PC</button>
+      </span>
+    </div>
+    <button type="button" class="linkish" id="toggle-all" aria-pressed="false">Show all steps on one page</button>
+  </div>
+</div>
+
+<main class="wrap guide one-at-a-time" id="guide">
+  <nav class="rail" aria-label="Steps" id="rail"></nav>
+
+  <div>
+    <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+
+    <article class="step" id="step-1" data-scene="download" data-phase="Install VS Code">
+      <div class="head"><p class="count">Step 1 of 12</p><h2>Download VS Code</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>Go to <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a>.</li>
+          <li>Click the download button for <span class="mac">Mac</span><span class="win">Windows</span>.</li>
+          <li>Wait for the download to finish.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Good to know</b><p>VS Code is free. It is made by Microsoft.</p></div>
+    </article>
+
+    <article class="step" id="step-2" data-scene="installapp" data-phase="Install VS Code">
+      <div class="head"><p class="count">Step 2 of 12</p><h2>Install and open VS Code</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do mac">
+          <li>Open your <b>Downloads</b> folder.</li>
+          <li>Drag <b>Visual Studio Code</b> into your <b>Applications</b> folder.</li>
+          <li>Open Applications and double-click <b>Visual Studio Code</b>. If your Mac asks, click <b>Open</b>.</li>
+        </ol>
+        <ol class="do win">
+          <li>Open your <b>Downloads</b> folder and double-click the VS Code installer.</li>
+          <li>Choose <b>I accept the agreement</b>, then keep clicking <b>Next</b>.</li>
+          <li>Click <b>Install</b>, then <b>Finish</b>. VS Code opens.</li>
+        </ol>
+      </div>
+    </article>
+
+    <article class="step" id="step-3" data-scene="openfolder" data-phase="Open a workshop folder">
+      <div class="head"><p class="count">Step 3 of 12</p><h2>Open a folder for your work</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>Click the blue <b>Open Folder</b> button on the left.</li>
+          <li>Go to your <b>Desktop</b> and make a new folder named <b>AI Workshop</b>.</li>
+          <li>Select that folder and click <b>Open</b>.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Why a folder?</b><p>Claude saves the files it makes for you here. You can find them later on your Desktop.</p></div>
+    </article>
+
+    <article class="step" id="step-4" data-scene="trust" data-phase="Open a workshop folder">
+      <div class="head"><p class="count">Step 4 of 12</p><h2>Tell VS Code the folder is safe</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>A box asks if you trust the authors of the files.</li>
+          <li>Click <b>Yes, I trust the authors</b>. You made this folder, so it is safe.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Skip this?</b><p>If you click No, Claude will not work in this folder.</p></div>
+    </article>
+
+    <article class="step" id="step-5" data-scene="extensions" data-phase="Add Claude Code">
+      <div class="head"><p class="count">Step 5 of 12</p><h2>Open Extensions</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>Look at the column of icons on the far left.</li>
+          <li>Click the icon made of <b>four small squares</b>. That is Extensions.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Shortcut</b><p>Press <span class="mac"><kbd>⌘ Cmd</kbd> <kbd>Shift</kbd> <kbd>X</kbd></span><span class="win"><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>X</kbd></span> together.</p></div>
+    </article>
+
+    <article class="step" id="step-6" data-scene="install" data-phase="Add Claude Code">
+      <div class="head"><p class="count">Step 6 of 12</p><h2>Install Claude Code</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>Type <b>Claude Code</b> in the search box.</li>
+          <li>Click <b>Claude Code for VS Code</b>. Check that it says <b>Anthropic</b> with a blue check mark.</li>
+          <li>Click the blue <b>Install</b> button. It takes a few seconds.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Look alikes</b><p>Other extensions use the word Claude. Only install the one from Anthropic.</p></div>
+    </article>
+
+    <article class="step" id="step-7" data-scene="newfile" data-phase="Connect your account">
+      <div class="head"><p class="count">Step 7 of 12</p><h2>Make a blank file</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>In the file list on the left, point at <b>AI WORKSHOP</b>.</li>
+          <li>Click the <b>New File</b> icon that appears next to it. It looks like a page with a plus sign.</li>
+          <li>Type <b>notes.md</b> and press <kbd>Enter</kbd>. The file opens.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Why?</b><p>The Claude button only shows up when a file is open.</p></div>
+    </article>
+
+    <article class="step" id="step-8" data-scene="spark" data-phase="Connect your account">
+      <div class="head"><p class="count">Step 8 of 12</p><h2>Click the orange Claude icon</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>Look at the <b>top right corner</b> of your open file.</li>
+          <li>Click the <b>orange starburst</b>. A Claude panel opens on the right.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Shortcut</b><p>Press <span class="mac"><kbd>⌘ Cmd</kbd> <kbd>Esc</kbd></span><span class="win"><kbd>Ctrl</kbd> <kbd>Esc</kbd></span> together.</p></div>
+    </article>
+
+    <article class="step" id="step-9" data-scene="signin" data-phase="Connect your account">
+      <div class="head"><p class="count">Step 9 of 12</p><h2>Sign in</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>The first time, the Claude panel shows a sign in screen.</li>
+          <li>Click <b>Sign in</b>. Your web browser opens.</li>
+        </ol>
+      </div>
+    </article>
+
+    <article class="step" id="step-10" data-scene="authorize" data-phase="Connect your account">
+      <div class="head"><p class="count">Step 10 of 12</p><h2>Approve in your browser</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>Sign in with the <b>same Claude account</b> that has your paid plan.</li>
+          <li>Click the button to <b>allow</b> Claude Code to connect.</li>
+          <li>Go back to VS Code. You are signed in.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Heads up</b><p>This page can look a little different from the picture. Look for the button that approves access.</p></div>
+    </article>
+
+    <article class="step" id="step-11" data-scene="prompt" data-phase="Try it">
+      <div class="head"><p class="count">Step 11 of 12</p><h2>Ask Claude for something</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>A short <b>Learn Claude Code</b> checklist may appear. Close it with the <b>X</b> or try it later.</li>
+          <li>Click the message box at the bottom of the Claude panel.</li>
+          <li>Type a request and press <kbd>Enter</kbd>.</li>
+        </ol>
+      </div>
+      <div class="tip"><b>Try this</b><p>Draft a one-page syllabus for my Introduction to Statistics course and save it as syllabus.md</p></div>
+    </article>
+
+    <article class="step" id="step-12" data-scene="result" data-phase="Try it">
+      <div class="head"><p class="count">Step 12 of 12</p><h2>See the file Claude made</h2></div>
+      <div class="stage"></div>
+      <div>
+        <ol class="do">
+          <li>If Claude asks permission to create the file, read it and approve.</li>
+          <li>The new file appears in your file list on the left.</li>
+          <li>Click it to read it. Edit anything you like.</li>
+        </ol>
+      </div>
+      <div class="finish">
+        <h3>You are all set</h3>
+        <p>Claude is connected. Bring this laptop to the workshop and we will build from here.</p>
+      </div>
+    </article>
+
+    <div class="nav">
+      <button type="button" id="prev">Back</button>
+      <button type="button" id="next" class="next">Next step</button>
+    </div>
+  </div>
+</main>
+
+<section class="help" id="help">
+  <div class="wrap">
+    <p class="kicker">Stuck?</p>
+    <h2>Quick fixes</h2>
+    <p>Tap a problem to see what to do.</p>
+
+    <details>
+      <summary>I do not see the orange Claude icon</summary>
+      <ol>
+        <li>Make sure a file is open. The icon only shows up next to an open file. See step 7.</li>
+        <li>Still missing? Press <span class="mac"><kbd>⌘ Cmd</kbd> <kbd>Shift</kbd> <kbd>P</kbd></span><span class="win"><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>P</kbd></span>, type <b>Reload Window</b>, and press <kbd>Enter</kbd>.</li>
+        <li>You can also click the Claude icon in the column of icons on the far left.</li>
+      </ol>
+    </details>
+
+    <details>
+      <summary>The extension will not install</summary>
+      <ol>
+        <li>Update VS Code. On a <span class="mac">Mac, click <b>Code</b> in the top menu</span><span class="win">Windows PC, click <b>Help</b> in the top menu</span>, then <b>Check for Updates</b>.</li>
+        <li>Restart VS Code and try step 6 again.</li>
+      </ol>
+    </details>
+
+    <details>
+      <summary>It keeps asking me to sign in</summary>
+      <ol>
+        <li>Make sure you sign in with the Claude account that has a paid plan.</li>
+        <li>Press <span class="mac"><kbd>⌘ Cmd</kbd> <kbd>Shift</kbd> <kbd>P</kbd></span><span class="win"><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>P</kbd></span>, type <b>Reload Window</b>, and press <kbd>Enter</kbd>.</li>
+      </ol>
+    </details>
+
+    <details>
+      <summary>The bottom bar says Restricted Mode</summary>
+      <ol>
+        <li>Click <b>Restricted Mode</b> in the bottom bar.</li>
+        <li>Choose to <b>trust</b> the folder. Claude needs this to work.</li>
+      </ol>
+    </details>
+
+    <details>
+      <summary>Claude does not answer</summary>
+      <ol>
+        <li>Check that your internet is working.</li>
+        <li>Close the Claude panel and click the orange icon again to start fresh.</li>
+      </ol>
+    </details>
+
+    <p>Still stuck? Bring your laptop to the workshop. We will fix it together. The official guide from Anthropic is <a href="https://code.claude.com/docs/en/vs-code" target="_blank" rel="noopener">here</a>.</p>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   Pictures. Each scene is an 800 x 500 drawing of the screen.
+   target = the spot the pointer moves to and "clicks".
+   ============================================================ */
+const C = { bg: "#1F1F1F", side: "#181818", line: "#2B2B2B", text: "#CCCCCC", dim: "#9D9D9D", blue: "#0078D4", orange: "#D97757" };
+const SPARK = "M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.449.255h.389l.055-.157-.134-.098-.103-.097-2.358-1.596-2.552-1.688-1.336-.972-.724-.491-.364-.462-.158-1.008.656-.722.881.06.225.061.893.686 1.908 1.476 2.491 1.833.365.304.145-.103.019-.073-.164-.274-1.355-2.446-1.446-2.49-.644-1.032-.17-.619a2.97 2.97 0 01-.104-.729L6.283.134 6.696 0l.996.134.42.364.62 1.414 1.002 2.229 1.555 3.03.456.898.243.832.091.255h.158V9.01l.128-1.706.237-2.095.23-2.695.08-.76.376-.91.747-.492.584.28.48.685-.067.444-.286 1.851-.559 2.903-.364 1.942h.212l.243-.242.985-1.306 1.652-2.064.73-.82.85-.904.547-.431h1.033l.76 1.129-.34 1.166-1.064 1.347-.881 1.142-1.264 1.7-.79 1.36.073.11.188-.02 2.856-.606 1.543-.28 1.841-.315.833.388.091.395-.328.807-1.969.486-2.309.462-3.439.813-.042.03.049.061 1.549.146.662.036h1.622l3.02.225.79.522.474.638-.079.485-1.215.62-1.64-.389-3.829-.91-1.312-.329h-.182v.11l1.093 1.068 2.006 1.81 2.509 2.33.127.578-.322.455-.34-.049-2.205-1.657-.851-.747-1.926-1.62h-.128v.17l.444.649 2.345 3.521.122 1.08-.17.353-.608.213-.668-.122-1.374-1.925-1.415-2.167-1.143-1.943-.14.08-.674 7.254-.316.37-.729.28-.607-.461-.322-.747.322-1.476.389-1.924.315-1.53.286-1.9.17-.632-.012-.042-.14.018-1.434 1.967-2.18 2.945-1.726 1.845-.414.164-.717-.37.067-.662.401-.589 2.388-3.036 1.44-1.882.93-1.086-.006-.158h-.055L4.132 18.56l-1.13.146-.487-.456.061-.746.231-.243 1.908-1.312-.006.006z";
+
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const T = (x, y, s, o = {}) =>
+  `<text x="${x}" y="${y}" font-family="${o.mono ? "JetBrains Mono, Menlo, monospace" : "Segoe UI, Helvetica Neue, Arial, sans-serif"}" font-size="${o.size || 12}" font-weight="${o.bold ? 700 : 400}" fill="${o.fill || C.text}" ${o.anchor ? `text-anchor="${o.anchor}"` : ""} ${o.id ? `id="${o.id}"` : ""}>${esc(s)}</text>`;
+const spark = (x, y, size, fill = C.orange) => `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24"><path d="${SPARK}" fill="${fill}"/></svg>`;
+
+function titleBar(os, title, light) {
+  const bar = light ? "#E9E9E9" : C.side;
+  let s = `<rect x="0" y="0" width="800" height="34" fill="${bar}"/>`;
+  if (os === "mac") {
+    s += `<circle cx="18" cy="17" r="6" fill="#FF5F57"/><circle cx="37" cy="17" r="6" fill="#FEBC2E"/><circle cx="56" cy="17" r="6" fill="#28C840"/>`;
+  } else {
+    const c = light ? "#333" : C.text;
+    s += `<path d="M732 17h10" stroke="${c}" stroke-width="1.2"/><rect x="756.5" y="12.5" width="9" height="9" fill="none" stroke="${c}" stroke-width="1.2"/><path d="M780 12l9 9M789 12l-9 9" stroke="${c}" stroke-width="1.2"/>`;
+    if (!light) s += T(58, 21, "File   Edit   Selection   View   Go   Run   …", { size: 12, fill: C.text });
+  }
+  if (!light) s += `<rect x="290" y="7" width="240" height="20" rx="5" fill="#2A2A2A" stroke="#3C3C3C"/>` + T(410, 21, title, { anchor: "middle", fill: C.dim });
+  return s;
+}
+
+function actIcon(kind, y, active) {
+  const c = active ? "#FFFFFF" : "#868686";
+  const g = {
+    files: `<path d="M17 ${y-10}h8l5 5v13H17z" fill="none" stroke="${c}" stroke-width="1.6"/><path d="M14 ${y-6}v15h11" fill="none" stroke="${c}" stroke-width="1.6"/>`,
+    search: `<circle cx="26" cy="${y-2}" r="6" fill="none" stroke="${c}" stroke-width="1.6"/><path d="M21.5 ${y+2.5}l-5 5" stroke="${c}" stroke-width="1.8"/>`,
+    scm: `<circle cx="18" cy="${y-8}" r="2.6" fill="none" stroke="${c}" stroke-width="1.5"/><circle cx="18" cy="${y+8}" r="2.6" fill="none" stroke="${c}" stroke-width="1.5"/><circle cx="30" cy="${y-4}" r="2.6" fill="none" stroke="${c}" stroke-width="1.5"/><path d="M18 ${y-5}v10M30 ${y-1}c0 6-12 4-12 9" fill="none" stroke="${c}" stroke-width="1.5"/>`,
+    run: `<path d="M18 ${y-9}l12 8-12 8z" fill="none" stroke="${c}" stroke-width="1.6"/>`,
+    ext: `<rect x="15" y="${y-4}" width="7" height="7" fill="none" stroke="${c}" stroke-width="1.6"/><rect x="22" y="${y-4}" width="7" height="7" fill="none" stroke="${c}" stroke-width="1.6"/><rect x="15" y="${y+3}" width="7" height="7" fill="none" stroke="${c}" stroke-width="1.6"/><rect x="24" y="${y-13}" width="7" height="7" transform="rotate(45 27.5 ${y-9.5})" fill="none" stroke="${c}" stroke-width="1.6"/>`
+  }[kind];
+  return (active ? `<rect x="0" y="${y-18}" width="2" height="36" fill="#FFFFFF"/>` : "") + g;
+}
+
+function vscode(os, o = {}) {
+  const panelX = o.panel ? 540 : 800;
+  let s = `<rect width="800" height="500" fill="${C.bg}"/>` + titleBar(os, o.title || "AI Workshop");
+  s += `<rect x="0" y="34" width="48" height="446" fill="${C.side}"/><rect x="48" y="34" width="1" height="446" fill="${C.line}"/>`;
+  const act = o.act || "files";
+  s += actIcon("files", 64, act === "files") + actIcon("search", 112, act === "search") + actIcon("scm", 160, act === "scm") + actIcon("run", 208, act === "run") + actIcon("ext", 256, act === "ext");
+  if (o.installed) s += spark(14, 290, 20, "#868686");
+  s += `<rect x="49" y="34" width="211" height="446" fill="${C.side}"/><rect x="260" y="34" width="1" height="446" fill="${C.line}"/>`;
+  s += o.sidebar || "";
+  s += `<rect x="261" y="34" width="${panelX - 261}" height="446" fill="${C.bg}"/>` + (o.editor || "");
+  if (o.panel) s += `<rect x="540" y="34" width="1" height="446" fill="${C.line}"/><rect x="541" y="34" width="259" height="446" fill="${C.side}"/>` + o.panel;
+  s += `<rect x="0" y="480" width="800" height="20" fill="${C.side}"/><rect x="0" y="480" width="800" height="1" fill="${C.line}"/><rect x="0" y="481" width="28" height="19" fill="${C.blue}"/>`;
+  s += T(40, 494, "⊗ 0  ⚠ 0", { size: 11, fill: C.dim });
+  return s;
+}
+
+function browser(os, url, body) {
+  return `<rect width="800" height="500" fill="#FFFFFF"/>` + titleBar(os, "", true) +
+    `<rect x="0" y="34" width="800" height="36" fill="#F3F3F3"/><rect x="0" y="70" width="800" height="1" fill="#DDDDDD"/>` +
+    `<rect x="110" y="41" width="580" height="22" rx="11" fill="#FFFFFF" stroke="#D6D6D6"/>` + T(130, 56, url, { size: 12, fill: "#444" }) + body;
+}
+
+function welcomeEditor() {
+  return `<g opacity=".9">` + T(400, 250, "Show All Commands", { anchor: "end", fill: C.dim, size: 12 }) + T(415, 250, "⇧ ⌘ P", { fill: C.dim, size: 12 }) +
+    T(400, 276, "Go to File", { anchor: "end", fill: C.dim, size: 12 }) + T(415, 276, "⌘ P", { fill: C.dim, size: 12 }) +
+    T(400, 302, "Toggle Terminal", { anchor: "end", fill: C.dim, size: 12 }) + T(415, 302, "⌃ `", { fill: C.dim, size: 12 }) + `</g>`;
+}
+
+function explorerFolder(files = [], highlight) {
+  let s = T(64, 56, "EXPLORER", { size: 11, fill: C.dim, bold: true }) +
+    `<rect x="49" y="68" width="211" height="22" fill="#202020"/>` + T(62, 83, "⌄  AI WORKSHOP", { size: 11, bold: true });
+  files.forEach((f, i) => {
+    const y = 108 + i * 22;
+    if (f === highlight) s += `<rect x="49" y="${y - 15}" width="211" height="22" fill="#04395E"/>`;
+    s += T(80, y, (f.endsWith(".md") ? "ⓜ " : "") + f, { size: 12 });
+  });
+  return s;
+}
+
+function tab(name) {
+  return `<rect x="261" y="34" width="539" height="34" fill="${C.side}"/><rect x="261" y="34" width="120" height="34" fill="${C.bg}"/><rect x="261" y="34" width="120" height="1.5" fill="${C.blue}"/>` +
+    T(282, 56, "ⓜ " + name, { size: 12 }) + T(366, 56, "×", { size: 14, fill: C.dim });
+}
+
+const SCENES = {
+  download: os => ({
+    svg: browser(os, "code.visualstudio.com/download",
+      T(400, 128, "Download Visual Studio Code", { anchor: "middle", size: 28, bold: true, fill: "#1B1B1B" }) +
+      T(400, 158, "Free and built on open source", { anchor: "middle", size: 15, fill: "#616161" }) +
+      [["Windows", 150], ["Linux", 330], ["Mac", 510]].map(([n, x]) =>
+        `<rect x="${x}" y="200" width="140" height="170" rx="8" fill="#F7F7F7" stroke="#E2E2E2"/>` +
+        T(x + 70, 270, n, { anchor: "middle", size: 22, bold: true, fill: "#333" }) +
+        `<rect x="${x + 15}" y="310" width="110" height="36" rx="4" fill="#0065A9"/>` + T(x + 70, 333, "Download", { anchor: "middle", size: 14, bold: true, fill: "#FFF" })
+      ).join("")),
+    target: os === "mac" ? [525, 310, 110, 36] : [165, 310, 110, 36]
+  }),
+
+  installapp: os => os === "mac"
+    ? {
+        svg: `<rect width="800" height="500" fill="#ECECEC"/>` + titleBar("mac", "", true) +
+          `<rect x="0" y="34" width="170" height="466" fill="#E3E3E3"/>` +
+          T(20, 64, "Favorites", { size: 11, bold: true, fill: "#888" }) + T(28, 90, "Applications", { size: 13, fill: "#333" }) + T(28, 116, "Desktop", { size: 13, fill: "#333" }) +
+          `<rect x="14" y="128" width="148" height="24" rx="5" fill="#D0D0D0"/>` + T(28, 145, "Downloads", { size: 13, fill: "#111", bold: true }) +
+          `<rect x="170" y="34" width="630" height="466" fill="#FFFFFF"/>` + T(190, 64, "Downloads", { size: 15, bold: true, fill: "#222" }) +
+          `<rect x="250" y="160" width="110" height="110" rx="24" fill="#1E8AD6"/><path d="M335 185l-50 40 50 40z M290 212l-18-14-10 8 20 19-20 19 10 8 18-14" fill="#FFFFFF" opacity=".95"/>` +
+          T(305, 300, "Visual Studio Code", { anchor: "middle", size: 13, fill: "#222" }) +
+          `<path d="M390 215 C 470 150, 560 150, 620 200" fill="none" stroke="#A6192E" stroke-width="4" stroke-dasharray="10 8"/><path d="M612 186l14 18-22 4z" fill="#A6192E"/>` +
+          `<path d="M600 225h60l10 12h70v70H600z" fill="#5AA9F5"/>` + T(670, 330, "Applications", { anchor: "middle", size: 13, fill: "#222" }) +
+          T(28, 90, "", {}),
+        target: [250, 160, 110, 110], drag: [640, 262]
+      }
+    : {
+        svg: `<rect width="800" height="500" fill="#3A6EA5"/>` +
+          `<rect x="170" y="80" width="460" height="340" fill="#F0F0F0" stroke="#999"/><rect x="170" y="80" width="460" height="30" fill="#FFFFFF"/>` +
+          T(186, 100, "Setup  Visual Studio Code", { size: 12, fill: "#222" }) +
+          `<rect x="170" y="110" width="460" height="70" fill="#FFFFFF"/>` + T(190, 140, "License Agreement", { size: 14, bold: true, fill: "#222" }) +
+          T(190, 162, "Please read the following important information", { size: 12, fill: "#444" }) +
+          `<rect x="190" y="195" width="420" height="110" fill="#FFFFFF" stroke="#BBB"/>` +
+          `<circle cx="200" cy="325" r="6" fill="#FFF" stroke="#333"/><circle cx="200" cy="325" r="3" fill="#0067C0"/>` + T(214, 329, "I accept the agreement", { size: 12, fill: "#222" }) +
+          `<rect x="170" y="370" width="460" height="1" fill="#CCC"/>` +
+          `<rect x="440" y="382" width="80" height="26" fill="#E1E1E1" stroke="#0067C0" stroke-width="2"/>` + T(480, 400, "Next >", { anchor: "middle", size: 12, fill: "#111" }) +
+          `<rect x="530" y="382" width="80" height="26" fill="#E1E1E1" stroke="#ADADAD"/>` + T(570, 400, "Cancel", { anchor: "middle", size: 12, fill: "#111" }),
+        target: [440, 382, 80, 26]
+      },
+
+  openfolder: os => ({
+    svg: vscode(os, {
+      title: "Welcome",
+      sidebar: T(64, 56, "EXPLORER", { size: 11, fill: C.dim, bold: true }) + T(62, 88, "⌄  NO FOLDER OPENED", { size: 11, bold: true }) +
+        T(66, 118, "You have not yet opened a folder.", { size: 11.5, fill: C.text }) +
+        `<rect x="66" y="132" width="178" height="28" rx="3" fill="${C.blue}"/>` + T(155, 151, "Open Folder", { anchor: "middle", size: 13, fill: "#FFF" }),
+      editor: welcomeEditor()
+    }),
+    target: [66, 132, 178, 28]
+  }),
+
+  trust: os => ({
+    svg: vscode(os, { title: "AI Workshop", sidebar: explorerFolder([]), editor: welcomeEditor() }) +
+      `<rect width="800" height="500" fill="#000" opacity=".45"/>` +
+      `<rect x="170" y="120" width="460" height="250" rx="8" fill="#252526" stroke="#454545"/>` +
+      `<path d="M400 142l22 9v16c0 14-10 23-22 27-12-4-22-13-22-27v-16z" fill="none" stroke="#3794FF" stroke-width="2.5"/>` +
+      T(400, 228, "Do you trust the authors of the files", { anchor: "middle", size: 17, bold: true, fill: "#FFF" }) +
+      T(400, 250, "in this folder?", { anchor: "middle", size: 17, bold: true, fill: "#FFF" }) +
+      T(400, 280, "Code provides features that may run files in this folder.", { anchor: "middle", size: 12, fill: C.dim }) +
+      `<rect x="190" y="318" width="205" height="32" rx="3" fill="${C.blue}"/>` + T(292, 339, "Yes, I trust the authors", { anchor: "middle", size: 13, fill: "#FFF" }) +
+      `<rect x="405" y="318" width="205" height="32" rx="3" fill="#3A3D41"/>` + T(507, 339, "No, I don't trust the authors", { anchor: "middle", size: 13, fill: "#FFF" }),
+    target: [190, 318, 205, 32]
+  }),
+
+  extensions: os => ({
+    svg: vscode(os, { sidebar: explorerFolder([]), editor: welcomeEditor() }),
+    target: [8, 240, 34, 34]
+  }),
+
+  install: os => ({
+    svg: vscode(os, {
+      act: "ext", title: "Extension  Claude Code for VS Code",
+      sidebar: T(64, 56, "EXTENSIONS", { size: 11, fill: C.dim, bold: true }) +
+        `<rect x="60" y="68" width="190" height="24" fill="#2A2A2A" stroke="${C.blue}"/>` + T(68, 85, "", { size: 12, id: "typed" }) +
+        `<rect x="49" y="104" width="211" height="62" fill="#04395E"/>` + spark(58, 114, 30) +
+        T(98, 124, "Claude Code for VS Code", { size: 12, bold: true, fill: "#FFF" }) +
+        T(98, 142, "Claude Code for VS Code", { size: 11, fill: C.dim }) +
+        `<circle cx="104" cy="156" r="5" fill="#3794FF"/>` + T(114, 160, "Anthropic", { size: 11, fill: C.text }) +
+        `<rect x="206" y="148" width="46" height="16" rx="2" fill="${C.blue}"/>` + T(229, 160, "Install", { anchor: "middle", size: 10.5, fill: "#FFF" }),
+      editor: `<rect x="261" y="34" width="539" height="34" fill="${C.side}"/>` + T(282, 56, "Extension  Claude Code for VS Code", { size: 12 }) +
+        spark(292, 96, 92) +
+        T(410, 124, "Claude Code for VS Code", { size: 22, bold: true, fill: "#FFF" }) +
+        `<circle cx="416" cy="146" r="6" fill="#3794FF"/><path d="M413 146l2.5 2.5 4-5" stroke="#FFF" stroke-width="1.6" fill="none"/>` +
+        T(428, 151, "Anthropic   |   anthropic.com", { size: 13, fill: C.text }) +
+        T(410, 176, "Claude Code for VS Code", { size: 13, fill: C.dim }) +
+        `<rect x="410" y="192" width="84" height="30" rx="3" fill="${C.blue}"/>` + T(452, 212, "Install", { anchor: "middle", size: 14, fill: "#FFF" }) +
+        `<rect x="261" y="250" width="539" height="1" fill="${C.line}"/>` +
+        [0, 1, 2, 3].map(i => `<rect x="292" y="${276 + i * 26}" width="${[430, 380, 450, 300][i]}" height="9" rx="4" fill="#2E2E2E"/>`).join("")
+    }),
+    target: [410, 192, 84, 30], type: "Claude Code"
+  }),
+
+  newfile: os => ({
+    svg: vscode(os, {
+      installed: true,
+      sidebar: T(64, 56, "EXPLORER", { size: 11, fill: C.dim, bold: true }) +
+        `<rect x="49" y="68" width="211" height="22" fill="#202020"/>` + T(62, 83, "⌄  AI WORKSHOP", { size: 11, bold: true }) +
+        `<path d="M186 73h7l4 4v9h-11z" fill="none" stroke="${C.text}" stroke-width="1.3"/><path d="M190 80h4M192 78v4" stroke="${C.text}" stroke-width="1.2"/>` +
+        `<path d="M206 76h5l2 2h7v8h-14z" fill="none" stroke="${C.text}" stroke-width="1.3"/>` +
+        `<rect x="226" y="75" width="10" height="10" fill="none" stroke="${C.text}" stroke-width="1.2"/>` +
+        `<rect x="60" y="94" width="190" height="22" fill="#2A2A2A" stroke="${C.blue}"/>` + T(70, 110, "", { size: 12, id: "typed" }),
+      editor: welcomeEditor()
+    }),
+    target: [182, 70, 18, 20], type: "notes.md"
+  }),
+
+  spark: os => ({
+    svg: vscode(os, {
+      installed: true, sidebar: explorerFolder(["notes.md"], "notes.md"),
+      editor: tab("notes.md") + spark(704, 42, 18) +
+        `<rect x="738" y="43" width="16" height="16" rx="2" fill="none" stroke="${C.text}" stroke-width="1.3"/><path d="M746 43v16" stroke="${C.text}" stroke-width="1.3"/>` +
+        T(772, 57, "···", { size: 14, fill: C.text }) +
+        T(290, 96, "1", { size: 12, fill: "#6E7681", mono: true }) + `<rect x="316" y="84" width="1.5" height="15" fill="#AEAFAD"/>`
+    }),
+    target: [697, 35, 32, 32]
+  }),
+
+  signin: os => ({
+    svg: vscode(os, {
+      installed: true, sidebar: explorerFolder(["notes.md"], "notes.md"),
+      editor: tab("notes.md") + T(290, 96, "1", { size: 12, fill: "#6E7681", mono: true }),
+      panel: T(556, 56, "Claude Code", { size: 12, bold: true }) + `<rect x="541" y="68" width="259" height="1" fill="${C.line}"/>` +
+        spark(640, 150, 60) +
+        T(670, 250, "Claude Code", { anchor: "middle", size: 18, bold: true, fill: "#FFF" }) +
+        T(670, 274, "Sign in to get started", { anchor: "middle", size: 12, fill: C.dim }) +
+        `<rect x="600" y="296" width="140" height="34" rx="6" fill="#F0EEE6"/>` + T(670, 318, "Sign in", { anchor: "middle", size: 14, bold: true, fill: "#141413" })
+    }),
+    target: [600, 296, 140, 34]
+  }),
+
+  authorize: os => ({
+    svg: browser(os, "claude.ai",
+      `<rect x="0" y="71" width="800" height="429" fill="#F5F4EE"/>` +
+      `<rect x="230" y="110" width="340" height="300" rx="14" fill="#FFFFFF" stroke="#E4E1D6"/>` + spark(376, 136, 48) +
+      T(400, 222, "Claude Code wants to connect", { anchor: "middle", size: 18, bold: true, fill: "#1F1E1D" }) +
+      T(400, 246, "to your Claude account", { anchor: "middle", size: 18, bold: true, fill: "#1F1E1D" }) +
+      T(400, 280, "Signed in with your Claude account", { anchor: "middle", size: 13, fill: "#6B6A63" }) +
+      `<rect x="270" y="320" width="260" height="40" rx="8" fill="#1F1E1D"/>` + T(400, 346, "Authorize", { anchor: "middle", size: 15, bold: true, fill: "#FFFFFF" })),
+    target: [270, 320, 260, 40]
+  }),
+
+  prompt: os => ({
+    svg: vscode(os, {
+      installed: true, sidebar: explorerFolder(["notes.md"], "notes.md"),
+      editor: tab("notes.md") + T(290, 96, "1", { size: 12, fill: "#6E7681", mono: true }),
+      panel: T(556, 56, "Claude Code", { size: 12, bold: true }) + `<rect x="541" y="68" width="259" height="1" fill="${C.line}"/>` +
+        spark(652, 180, 36, "#5A5A5A") + T(670, 240, "What should we work on?", { anchor: "middle", size: 12, fill: C.dim }) +
+        `<rect x="552" y="380" width="238" height="88" rx="8" fill="#252526" stroke="#4A4A4A"/>` +
+        `<foreignObject x="560" y="386" width="222" height="60"><div xmlns="http://www.w3.org/1999/xhtml" id="typedbox" style="font:12px/1.35 Segoe UI,Helvetica Neue,Arial,sans-serif;color:#E6E6E6"></div></foreignObject>` +
+        T(562, 460, "/", { size: 12, fill: C.dim }) + `<circle cx="774" cy="455" r="9" fill="${C.orange}"/><path d="M774 460v-9M770 455l4-4 4 4" stroke="#FFF" stroke-width="1.6" fill="none"/>`
+    }),
+    target: [552, 380, 238, 88], typeBox: "Draft a one-page syllabus for my Introduction to Statistics course and save it as syllabus.md"
+  }),
+
+  result: os => ({
+    svg: vscode(os, {
+      installed: true, sidebar: explorerFolder(["notes.md", "syllabus.md"], "syllabus.md"),
+      editor: tab("syllabus.md") +
+        [["# Introduction to Statistics", "#569CD6", true], ["", ""], ["## Course description", "#569CD6", true], ["This course covers the basics", C.text], ["of collecting and reading data.", C.text], ["", ""], ["## Weekly schedule", "#569CD6", true], ["Week 1  Data and variables", C.text], ["Week 2  Charts and graphs", C.text], ["Week 3  Mean, median, and mode", C.text]]
+          .map(([t, f, b], i) => T(290, 96 + i * 22, String(i + 1), { size: 11, fill: "#6E7681", mono: true }) + T(318, 96 + i * 22, t, { size: 11.5, fill: f || C.text, bold: b, mono: true })).join(""),
+      panel: T(556, 56, "Claude Code", { size: 12, bold: true }) + `<rect x="541" y="68" width="259" height="1" fill="${C.line}"/>` +
+        `<rect x="552" y="84" width="238" height="48" rx="6" fill="#2A2A2A"/>` + T(562, 104, "Draft a one-page syllabus for my", { size: 11.5 }) + T(562, 122, "Introduction to Statistics course…", { size: 11.5 }) +
+        `<circle cx="560" cy="156" r="4" fill="#3FB950"/>` + T(572, 160, "Write  syllabus.md", { size: 12, bold: true, fill: "#FFF" }) +
+        T(560, 190, "I created syllabus.md with a course", { size: 11.5 }) + T(560, 208, "description, outcomes, a weekly", { size: 11.5 }) + T(560, 226, "schedule, and grading.", { size: 11.5 }) +
+        `<rect x="552" y="400" width="238" height="68" rx="8" fill="#252526" stroke="#4A4A4A"/>` + T(562, 424, "Ask a follow-up…", { size: 12, fill: "#7A7A7A" })
+    }),
+    target: [49, 115, 211, 22]
+  })
+};
+
+/* ============================================================
+   Pointer animation and zoom for small screens
+   ============================================================ */
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const CURSOR = `<path d="M0 0L0 20L5.2 15L9 23.5L12.4 22L8.7 13.6H15.5Z" fill="#FFFFFF" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/>`;
+
+function drawScene(article, os) {
+  const stage = article.querySelector(".stage");
+  const scene = SCENES[article.dataset.scene](os);
+  const [x, y, w, h] = scene.target;
+  const cx = x + w / 2, cy = y + h / 2;
+  const small = stage.clientWidth && stage.clientWidth < 620;
+  let vb = "0 0 800 500";
+  if (small) {
+    const zw = 440, zh = 275;
+    const vx = Math.max(0, Math.min(800 - zw, cx - zw / 2)), vy = Math.max(0, Math.min(500 - zh, cy - zh / 2));
+    vb = `${vx} ${vy} ${zw} ${zh}`;
+  }
+  const title = article.querySelector("h2").textContent;
+  stage.innerHTML =
+    `<svg viewBox="${vb}" role="img" aria-label="Picture of the screen for this step. ${esc(title)}" xmlns="http://www.w3.org/2000/svg">` +
+    scene.svg +
+    `<rect class="ring" x="${x - 6}" y="${y - 6}" width="${w + 12}" height="${h + 12}" rx="8"/>` +
+    `<circle class="tapdot" cx="${cx}" cy="${cy}" r="10"/>` +
+    `<g class="cursor" transform="translate(${cx + 4} ${cy + 4})">${CURSOR}</g>` +
+    `</svg>`;
+
+  const svg = stage.querySelector("svg");
+  const cursor = svg.querySelector(".cursor");
+  const tap = svg.querySelector(".tapdot");
+  article._anims?.forEach(a => a.cancel());
+  article._timers?.forEach(t => clearInterval(t));
+  article._anims = []; article._timers = [];
+
+  const typedEl = svg.querySelector("#typed");
+  const typedBox = svg.querySelector("#typedbox");
+  if (reduceMotion) {
+    if (typedEl) typedEl.textContent = scene.type;
+    if (typedBox) typedBox.textContent = scene.typeBox;
+    return;
+  }
+
+  const endX = scene.drag ? scene.drag[0] : cx + 4, endY = scene.drag ? scene.drag[1] : cy + 4;
+  const sx = Math.min(760, cx + 150), sy = Math.min(470, cy + 110);
+  const frames = scene.drag
+    ? [
+        { transform: `translate(${sx}px, ${sy}px)`, opacity: 0, offset: 0 },
+        { transform: `translate(${sx}px, ${sy}px)`, opacity: 1, offset: .08 },
+        { transform: `translate(${cx + 4}px, ${cy + 4}px)`, opacity: 1, offset: .35 },
+        { transform: `translate(${endX}px, ${endY}px)`, opacity: 1, offset: .75 },
+        { transform: `translate(${endX}px, ${endY}px)`, opacity: 1, offset: 1 }
+      ]
+    : [
+        { transform: `translate(${sx}px, ${sy}px) scale(1)`, opacity: 0, offset: 0 },
+        { transform: `translate(${sx}px, ${sy}px) scale(1)`, opacity: 1, offset: .1 },
+        { transform: `translate(${cx + 4}px, ${cy + 4}px) scale(1)`, opacity: 1, offset: .45 },
+        { transform: `translate(${cx + 4}px, ${cy + 4}px) scale(.82)`, opacity: 1, offset: .52 },
+        { transform: `translate(${cx + 4}px, ${cy + 4}px) scale(1)`, opacity: 1, offset: .6 },
+        { transform: `translate(${cx + 4}px, ${cy + 4}px) scale(1)`, opacity: 1, offset: 1 }
+      ];
+  cursor.removeAttribute("transform");
+  cursor.style.transformBox = "view-box";
+  const dur = scene.drag ? 4200 : 3400;
+  article._anims.push(cursor.animate(frames, { duration: dur, iterations: Infinity, easing: "ease-in-out" }));
+  if (!scene.drag) {
+    article._anims.push(tap.animate(
+      [{ opacity: 0, transform: "scale(.4)", offset: 0 }, { opacity: 0, transform: "scale(.4)", offset: .5 }, { opacity: .7, transform: "scale(1)", offset: .56 }, { opacity: 0, transform: "scale(2.4)", offset: .75 }, { opacity: 0, offset: 1 }],
+      { duration: dur, iterations: Infinity }));
+  }
+
+  const typeInto = (el, text, delay) => {
+    let i = 0; el.textContent = "";
+    const start = setTimeout(() => {
+      const t = setInterval(() => { el.textContent = text.slice(0, ++i) + (i < text.length ? "|" : ""); if (i >= text.length) clearInterval(t); }, 55);
+      article._timers.push(t);
+    }, delay);
+    article._timers.push(start);
+  };
+  if (typedEl) typeInto(typedEl, scene.type, 300);
+  if (typedBox) typeInto(typedBox, scene.typeBox, 300);
+}
+
+/* ============================================================
+   Step navigation
+   ============================================================ */
+const guide = document.getElementById("guide");
+const steps = [...document.querySelectorAll(".step")];
+const rail = document.getElementById("rail");
+const bar = document.getElementById("bar");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+let current = 0;
+let os = "mac";
+try { os = localStorage.getItem("cau-ai-os") || (/Win/i.test(navigator.userAgent) ? "win" : "mac"); } catch { os = /Win/i.test(navigator.userAgent) ? "win" : "mac"; }
+
+// Build the step list, grouped by phase.
+let html = "", lastPhase = "";
+steps.forEach((s, i) => {
+  if (s.dataset.phase !== lastPhase) { html += `${lastPhase ? "</ol>" : ""}<p class="phase">${s.dataset.phase}</p><ol>`; lastPhase = s.dataset.phase; }
+  html += `<li><button type="button" id="rail-${i + 1}" data-i="${i}"><span class="dot">${i + 1}</span><span>${s.querySelector("h2").textContent}</span></button></li>`;
+});
+rail.innerHTML = html + "</ol>";
+const railButtons = [...rail.querySelectorAll("button")];
+railButtons.forEach(b => b.addEventListener("click", () => go(+b.dataset.i, true)));
+
+function oneAtATime() { return guide.classList.contains("one-at-a-time"); }
+
+function go(i, focus, keepUrl) {
+  current = Math.max(0, Math.min(steps.length - 1, i));
+  if (oneAtATime()) {
+    steps.forEach((s, j) => { s.hidden = j !== current; });
+    drawScene(steps[current], os);
+    if (!keepUrl) history.replaceState(null, "", "#step-" + (current + 1));
+  }
+  railButtons.forEach((b, j) => {
+    b.toggleAttribute("aria-current", false);
+    if (j === current) b.setAttribute("aria-current", "step");
+    if (j < current) b.classList.add("seen");
+  });
+  bar.style.width = ((current + 1) / steps.length * 100) + "%";
+  prev.disabled = current === 0;
+  next.textContent = current === steps.length - 1 ? "Done" : "Next step";
+  next.disabled = current === steps.length - 1;
+  if (focus) steps[current].querySelector("h2").scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" });
+}
+
+prev.addEventListener("click", () => { go(current - 1); guide.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); });
+next.addEventListener("click", () => { go(current + 1); guide.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); });
+document.addEventListener("keydown", e => {
+  if (!oneAtATime() || e.target.closest("input, textarea")) return;
+  if (e.key === "ArrowRight") go(current + 1);
+  if (e.key === "ArrowLeft") go(current - 1);
+});
+
+// Mac or Windows
+function setOS(v) {
+  os = v; document.body.dataset.os = v;
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.os === v ? "true" : "false"));
+  try { localStorage.setItem("cau-ai-os", v); } catch {}
+  redraw();
+}
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => setOS(b.dataset.os)));
+
+// All steps on one page
+const toggleAll = document.getElementById("toggle-all");
+toggleAll.addEventListener("click", () => {
+  const all = oneAtATime();
+  guide.classList.toggle("one-at-a-time", !all);
+  toggleAll.setAttribute("aria-pressed", all ? "true" : "false");
+  toggleAll.textContent = all ? "Show one step at a time" : "Show all steps on one page";
+  if (all) { steps.forEach(s => { s.hidden = false; }); redraw(); }
+  else go(current);
+});
+
+function redraw() {
+  if (oneAtATime()) drawScene(steps[current], os);
+  else steps.forEach(s => drawScene(s, os));
+}
+let lastWidth = 0;
+new ResizeObserver(entries => {
+  const w = Math.round(entries[0].contentRect.width);
+  if (Math.abs(w - lastWidth) > 40) { lastWidth = w; redraw(); }
+}).observe(guide);
+
+addEventListener("beforeprint", () => { steps.forEach(s => { s.hidden = false; drawScene(s, os); }); });
+addEventListener("afterprint", () => go(current, false, true));
+
+document.body.dataset.os = os;
+document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.os === os ? "true" : "false"));
+const fromHash = parseInt((location.hash.match(/step-(\d+)/) || [])[1], 10);
+go(Number.isFinite(fromHash) ? fromHash - 1 : 0, false, true);
+</script>
+</body>
+</html>
