@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Less Prep, More Purpose | CAU AI Workshop</title>
+<meta name="description" content="Setup steps, prompt starters, and resources for the Clark Atlanta University AI workshop for faculty and staff.">
+<link rel="icon" href="assets/cau-math-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    --red: #A6192E;
+    --red-strong: #A6192E;
+    --on-red: #FFFFFF;
+    --on-red-soft: #FFD9DE;
+    --ground: #FBF8F7;
+    --surface: #FFFFFF;
+    --ink: #1F1A1B;
+    --stone: #6B5F61;
+    --blush: #F6E7E4;
+    --line: #E8DAD7;
+    --focus: #1F5FBF;
+    --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --red: #F07A8B;
+      --red-strong: #8E1527;
+      --on-red: #FFFFFF;
+      --on-red-soft: #FFD0D7;
+      --ground: #161213;
+      --surface: #211B1C;
+      --ink: #F3ECEB;
+      --stone: #B8ABAD;
+      --blush: #3A2427;
+      --line: #3A3032;
+      --focus: #8AB4FF;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --red: #F07A8B;
+    --red-strong: #8E1527;
+    --on-red: #FFFFFF;
+    --on-red-soft: #FFD0D7;
+    --ground: #161213;
+    --surface: #211B1C;
+    --ink: #F3ECEB;
+    --stone: #B8ABAD;
+    --blush: #3A2427;
+    --line: #3A3032;
+    --focus: #8AB4FF;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  .wrap > *, .hero .wrap > *, .setup-grid > *, .prompts > *, .res-grid > *, .materials > *, .session > div { min-width: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--body); font-size: 1.0625rem; line-height: 1.55;
+  }
+  a { color: var(--red); text-underline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  img { max-width: 100%; }
+  .wrap { max-width: 1080px; margin-inline: auto; padding-inline: 20px; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+  h2 { font-size: clamp(1.75rem, 3.2vw, 2.25rem); font-weight: 800; letter-spacing: -.01em; line-height: 1.1; }
+  h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.2; }
+  .kicker {
+    font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin: 0 0 .4rem;
+  }
+  .intro { color: var(--stone); max-width: 62ch; margin: .6rem 0 0; }
+  section { padding-block: 64px 8px; }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 10px; flex-wrap: wrap; }
+  .logo-plate { background: #FFFFFF; border-radius: 6px; padding: 6px 10px; display: block; line-height: 0; }
+  .logo-plate img { height: 42px; width: auto; }
+  nav ul { list-style: none; display: flex; gap: 4px; margin: 0; padding: 0; flex-wrap: wrap; }
+  nav a {
+    display: block; padding: 6px 12px; border-radius: 99px; text-decoration: none; color: var(--ink); font-weight: 700; font-size: .95rem;
+  }
+  nav a:hover { background: var(--blush); color: var(--red); }
+
+  /* ---------- Hero ---------- */
+  .hero { background: var(--red-strong); color: var(--on-red); padding-block: 56px 60px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; }
+  .hero .kicker { color: var(--on-red-soft); }
+  .hero h1 { font-size: clamp(2.5rem, 5.5vw, 4rem); font-weight: 800; line-height: .98; letter-spacing: -.02em; }
+  .hero h1 span { display: block; color: var(--on-red-soft); }
+  .hero p.lede { font-size: 1.2rem; margin: 1.1rem 0 0; max-width: 40ch; }
+  .sessions { display: grid; gap: 14px; }
+  .session {
+    background: #FFFFFF; color: #1F1A1B; border-radius: 10px; padding: 16px 18px;
+    display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center;
+    box-shadow: 0 10px 24px rgba(40, 0, 8, .25);
+  }
+  .cal { width: 74px; border: 2px solid #1F1A1B; border-radius: 6px; overflow: hidden; text-align: center; }
+  .cal .mon { background: #1F1A1B; color: #fff; font-weight: 700; font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; padding: 2px 0; }
+  .cal .day { font-family: var(--display); font-weight: 800; font-size: 2.1rem; line-height: 1.05; padding-top: 2px; }
+  .cal .dow { font-size: .66rem; font-weight: 700; letter-spacing: .1em; color: #A6192E; text-transform: uppercase; padding-bottom: 4px; }
+  .session .label { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #A6192E; margin: 0; }
+  .session .time { font-family: var(--display); font-weight: 800; font-size: 1.9rem; line-height: 1.05; margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .session .place { margin: 0; color: #6B5F61; font-size: .98rem; }
+
+  /* ---------- Checklist ---------- */
+  .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; align-items: start; }
+  .group { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px 22px 10px; }
+  .group h3 { margin-bottom: 4px; }
+  .group .when { margin: 0 0 12px; color: var(--stone); font-size: .95rem; }
+  .checklist { list-style: none; margin: 0; padding: 0; }
+  .checklist li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .checklist input {
+    appearance: none; width: 24px; height: 24px; margin: 2px 0 0; border: 2px solid var(--red); border-radius: 6px; cursor: pointer;
+    display: grid; place-items: center; background: var(--surface);
+  }
+  .checklist input:checked { background: var(--red); }
+  .checklist input:checked::after { content: ""; width: 7px; height: 12px; border: solid var(--surface); border-width: 0 3px 3px 0; transform: translateY(-1px) rotate(45deg); }
+  .checklist label { font-weight: 700; cursor: pointer; }
+  .checklist input:checked + div label { text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; color: var(--stone); }
+  .checklist p { margin: 2px 0 8px; color: var(--stone); font-size: .98rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: .95rem; text-decoration: none;
+    padding: 7px 14px; border-radius: 99px; border: 2px solid var(--red); color: var(--red); background: transparent; cursor: pointer; font-family: var(--body);
+  }
+  .btn:hover { background: var(--red); color: var(--surface); }
+  .btn.solid { background: var(--red); color: var(--surface); }
+  .btn.solid:hover { filter: brightness(1.08); }
+  .tag {
+    display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--red); border: 1.5px solid var(--red); border-radius: 99px; padding: 0 8px; margin-left: 6px; vertical-align: 2px;
+  }
+
+  /* ---------- Recipe ---------- */
+  .recipe { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .recipe li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 16px; }
+  .recipe .letter {
+    font-family: var(--display); font-weight: 800; font-size: 2.4rem; line-height: 1; color: var(--red); display: block;
+  }
+  .recipe b { display: block; font-size: 1.05rem; margin-top: 6px; }
+  .recipe span.say { display: block; color: var(--stone); font-size: .95rem; margin-top: 2px; }
+
+  /* ---------- Prompts ---------- */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+  .filters button {
+    font-family: var(--body); font-weight: 700; font-size: .95rem; padding: 7px 16px; border-radius: 99px; cursor: pointer;
+    border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+  }
+  .filters button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--ground); }
+  .prompts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 18px; }
+  .prompt { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .prompt header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .prompt .cat { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); white-space: nowrap; }
+  .prompt pre {
+    margin: 0; white-space: pre-wrap; font-family: var(--mono); font-size: .86rem; line-height: 1.6;
+    background: var(--blush); border-radius: 8px; padding: 12px 14px; color: var(--ink); flex: 1;
+  }
+  .prompt pre mark { background: transparent; color: var(--red); font-weight: 700; }
+  .prompt .btn { align-self: flex-start; }
+  .hint { color: var(--stone); font-size: .95rem; margin: 14px 0 0; }
+  .hint mark { background: transparent; color: var(--red); font-family: var(--mono); font-weight: 700; }
+
+  /* ---------- Guardrails ---------- */
+  .rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 28px; border-top: 3px solid var(--ink); }
+  .rules div { padding: 16px 18px 4px 0; }
+  .rules div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+  .rules p { margin: 6px 0 0; color: var(--stone); font-size: .98rem; }
+
+  /* ---------- Resources ---------- */
+  .res-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+  .res-grid h3 { font-size: 1.05rem; padding-bottom: 8px; border-bottom: 2px solid var(--red); margin-bottom: 4px; }
+  .links { list-style: none; margin: 0; padding: 0; }
+  .links li { border-bottom: 1px solid var(--line); }
+  .links a { display: block; padding: 12px 0; text-decoration: none; color: var(--ink); }
+  .links a b { display: block; color: var(--red); }
+  .links a span { display: block; color: var(--stone); font-size: .93rem; }
+  .links a:hover b { text-decoration: underline; }
+
+  /* ---------- Materials ---------- */
+  .materials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+  .material { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .material p { margin: 0; color: var(--stone); font-size: .96rem; flex: 1; }
+  .material .btn { align-self: flex-start; margin-top: 8px; }
+  .material.pending { background: transparent; border-style: dashed; }
+  .material.pending .soon { font-family: var(--mono); font-size: .82rem; color: var(--stone); margin-top: 8px; }
+
+  /* ---------- Presenter ---------- */
+  .presenter { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 26px; display: grid; grid-template-columns: 150px 1fr; gap: 28px; align-items: center; margin-top: 28px; }
+  .presenter img { width: 150px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; display: block; }
+  .presenter h3 { font-size: 1.6rem; font-weight: 800; }
+  .presenter .role { margin: 2px 0 10px; color: var(--stone); }
+  .presenter p.bio { margin: 0; max-width: 68ch; }
+
+  footer { margin-top: 64px; border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--stone); font-size: .92rem; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 900px) {
+    .hero .wrap, .setup-grid { grid-template-columns: 1fr; }
+    .recipe { grid-template-columns: repeat(2, 1fr); }
+    .rules { grid-template-columns: 1fr 1fr; }
+    .rules div:nth-child(3) { padding-left: 0; border-left: 0; }
+    .res-grid, .materials { grid-template-columns: 1fr; }
+    .prompts { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    nav { width: 100%; }
+    nav ul { gap: 2px; }
+    nav a { padding: 5px 9px; font-size: .9rem; }
+    .recipe, .rules { grid-template-columns: 1fr; }
+    .rules div, .rules div + div { padding-left: 0; border-left: 0; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+    .presenter { grid-template-columns: 1fr; }
+    .session .time { font-size: 1.35rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="logo-plate" href="#top" aria-label="Back to top"><img src="assets/cau-math-logo.png" alt="Clark Atlanta University, Department of Mathematical Sciences"></a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#setup">Get set up</a></li>
+        <li><a href="#prompts">Prompts</a></li>
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#materials">Materials</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="kicker">Faculty and Staff Workshop, Fall 2026</p>
+      <h1>Less prep. <span>More time for what matters.</span></h1>
+      <p class="lede">Everything you need for the workshop lives on this page. Come back to it any time.</p>
+    </div>
+    <div class="sessions">
+      <div class="session">
+        <div class="cal" aria-hidden="true"><div class="mon">Sep</div><div class="day">18</div><div class="dow">Friday</div></div>
+        <div>
+          <p class="label">Workshop</p>
+          <p class="time">1:00 PM</p>
+          <p class="place">Friday, September 18<br>McPheeters-Dennis Hall, Room 150B</p>
+        </div>
+      </div>
+      <div class="session">
+        <div class="cal" aria-hidden="true"><div class="mon">Oct</div><div class="day">15</div><div class="dow">Thursday</div></div>
+        <div>
+          <p class="label">Follow-up session</p>
+          <p class="time">12:30 PM</p>
+          <p class="place">Thursday, October 15<br>McPheeters-Dennis Hall, Room 150B</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="setup">
+    <div class="wrap">
+      <p class="kicker">Step by step</p>
+      <h2>Get set up</h2>
+      <p class="intro">Tick each box as you go. This page remembers your progress on this device.</p>
+
+      <div class="setup-grid">
+        <div class="group">
+          <h3>Before the workshop</h3>
+          <p class="when">About 10 minutes</p>
+          <ul class="checklist">
+            <li>
+              <input type="checkbox" id="step-account">
+              <div>
+                <label for="step-account">Create a Claude account</label>
+                <p>Sign up with your email or Google account.</p>
+                <a class="btn solid" href="https://claude.ai/login" target="_blank" rel="noopener">Sign up for Claude</a>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" id="step-plan">
+              <div>
+                <label for="step-plan">Upgrade to a paid plan <span class="tag">Recommended</span></label>
+                <p>The Pro plan gives you much more use each day and the full set of features.</p>
+                <a class="btn" href="https://claude.com/pricing" target="_blank" rel="noopener">Compare plans</a>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" id="step-laptop">
+              <div>
+                <label for="step-laptop">Charge your laptop and bring it</label>
+                <p>We work hands-on the whole time.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>For the hands-on part</h3>
+          <p class="when">Optional before you arrive. We can do it together.</p>
+          <ul class="checklist">
+            <li>
+              <input type="checkbox" id="step-desktop">
+              <div>
+                <label for="step-desktop">Install the Claude desktop app</label>
+                <p>Same Claude, in its own window on your computer.</p>
+                <a class="btn" href="https://claude.ai/download" target="_blank" rel="noopener">Download Claude</a>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" id="step-vscode">
+              <div>
+                <label for="step-vscode">Install VS Code</label>
+                <p>A free app from Microsoft. We use it to build larger course materials with Claude.</p>
+                <a class="btn" href="https://code.visualstudio.com/download" target="_blank" rel="noopener">Download VS Code</a>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" id="step-extension">
+              <div>
+                <label for="step-extension">Add Claude Code to VS Code</label>
+                <p>Open VS Code, click Extensions on the left, search for Claude Code, then click Install.</p>
+                <a class="btn" href="https://code.claude.com/docs/en/vs-code" target="_blank" rel="noopener">See the setup guide</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="recipe">
+    <div class="wrap">
+      <p class="kicker">Better results</p>
+      <h2>The prompt recipe</h2>
+      <p class="intro">Claude works best when you brief it like a new colleague. Give it these five things.</p>
+      <ol class="recipe">
+        <li><span class="letter">R</span><b>Role</b><span class="say">Who should it act as?</span></li>
+        <li><span class="letter">C</span><b>Context</b><span class="say">What does it need to know?</span></li>
+        <li><span class="letter">A</span><b>Audience</b><span class="say">Who will read the result?</span></li>
+        <li><span class="letter">T</span><b>Tone</b><span class="say">How should it sound?</span></li>
+        <li><span class="letter">C</span><b>Constraints</b><span class="say">Length, format, and limits.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="prompts">
+    <div class="wrap">
+      <p class="kicker">Copy and paste</p>
+      <h2>Prompt starters</h2>
+      <p class="intro">Copy a prompt, paste it into Claude, and replace the red parts with your own details.</p>
+
+      <div class="filters" role="group" aria-label="Filter prompts">
+        <button type="button" id="filter-all" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" id="filter-teaching" data-filter="teaching" aria-pressed="false">Teaching</button>
+        <button type="button" id="filter-office" data-filter="office" aria-pressed="false">Office work</button>
+      </div>
+
+      <div class="prompts" id="prompt-list"></div>
+    </div>
+  </section>
+
+  <section id="guardrails">
+    <div class="wrap">
+      <p class="kicker">Use it well</p>
+      <h2>Four habits to keep</h2>
+      <div class="rules">
+        <div><h3>Protect privacy</h3><p>Leave out student names, grades, and ID numbers. FERPA still applies.</p></div>
+        <div><h3>Check the facts</h3><p>AI can sound sure and still be wrong. Verify dates, sources, and numbers.</p></div>
+        <div><h3>Stay the author</h3><p>Treat every result as a first draft. Edit it until it sounds like you.</p></div>
+        <div><h3>Be open about it</h3><p>Follow CAU guidance and your course policy on AI use.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resources">
+    <div class="wrap">
+      <p class="kicker">Keep learning</p>
+      <h2>Resources</h2>
+      <p class="intro">Trusted links, all free to read. Each one opens in a new tab.</p>
+      <div class="res-grid">
+        <div>
+          <h3>Getting started</h3>
+          <ul class="links">
+            <li><a href="https://support.claude.com/en/articles/8114491-get-started-with-claude" target="_blank" rel="noopener"><b>Get started with Claude</b><span>The official beginner guide</span></a></li>
+            <li><a href="https://support.claude.com/en/articles/8325606-what-is-the-pro-plan" target="_blank" rel="noopener"><b>What is the Pro plan?</b><span>What a paid plan adds</span></a></li>
+            <li><a href="https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects" target="_blank" rel="noopener"><b>Projects</b><span>Keep one course's files and chats together</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Free courses</h3>
+          <ul class="links">
+            <li><a href="https://anthropic.skilljar.com/ai-fluency-for-educators" target="_blank" rel="noopener"><b>AI Fluency for Educators</b><span>Bring AI into your teaching</span></a></li>
+            <li><a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" rel="noopener"><b>AI Fluency Foundations</b><span>Core skills for working with AI</span></a></li>
+            <li><a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener"><b>All Anthropic courses</b><span>Free, with a certificate at the end</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Claude in VS Code</h3>
+          <ul class="links">
+            <li><a href="https://code.visualstudio.com/download" target="_blank" rel="noopener"><b>Download VS Code</b><span>Mac, Windows, and Linux</span></a></li>
+            <li><a href="https://code.claude.com/docs/en/vs-code" target="_blank" rel="noopener"><b>Use Claude Code in VS Code</b><span>The official setup guide</span></a></li>
+            <li><a href="https://support.claude.com/en/" target="_blank" rel="noopener"><b>Claude Help Center</b><span>Answers to common questions</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="materials">
+    <div class="wrap">
+      <p class="kicker">Downloads</p>
+      <h2>Session materials</h2>
+      <p class="intro">Slides and handouts go here after each session. No need to wait for an email.</p>
+      <div class="materials">
+        <div class="material">
+          <h3>Workshop flyer</h3>
+          <p>Dates, room, and what to bring.</p>
+          <a class="btn" href="materials/AI-Workshop-Flyer.pdf" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+        <div class="material pending">
+          <h3>Workshop slides</h3>
+          <p>From the September 18 session.</p>
+          <span class="soon">Posted after Sept 18</span>
+        </div>
+        <div class="material pending">
+          <h3>Follow-up slides</h3>
+          <p>From the October 15 session.</p>
+          <span class="soon">Posted after Oct 15</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="presenter">
+    <div class="wrap">
+      <p class="kicker">Your presenter</p>
+      <h2>Meet Dr. Dixon</h2>
+      <div class="presenter">
+        <img src="assets/dixon.jpg" alt="Dr. Dewayne A. Dixon" width="150" height="188">
+        <div>
+          <h3>Dr. Dewayne A. Dixon</h3>
+          <p class="role">Assistant Professor, Department of Mathematical Sciences</p>
+          <p class="bio">Dr. Dixon holds a PhD in Mathematics from Howard University and a BS from Morehouse College. He gives talks on how to use generative AI and on the mathematics behind how AI models are built. Through the AUC Data Science Initiative, he has trained faculty at HBCUs across the country. His research uses machine learning to study complex biological data, such as DNA markers of PTSD.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Clark Atlanta University, Department of Mathematical Sciences</span>
+    <span>Faculty and Staff AI Workshop, Fall 2026</span>
+  </div>
+</footer>
+
+<script>
+  // Prompt starters. Text inside [brackets] is shown in red for people to replace.
+  const PROMPTS = [
+    { cat: "teaching", title: "Draft a syllabus",
+      text: "You are an experienced professor at an HBCU. Draft a syllabus for [course name and number], a [level] course that meets [days and times] for [number] weeks. Include learning outcomes, a weekly schedule, a grading breakdown, and course policies. Write in plain language a first-year student will understand. Keep it under three pages." },
+    { cat: "teaching", title: "Write a quiz and answer key",
+      text: "Write a [number]-question quiz on [topic] for [course name]. Mix multiple choice and short answer questions. Match the difficulty to [level] students. After the quiz, give an answer key with a one-sentence explanation for each answer." },
+    { cat: "teaching", title: "Build a grading rubric",
+      text: "Build a grading rubric for [assignment name], worth [points] points. Use four performance levels and [number] criteria. Describe each level in words a student can act on. Format it as a table." },
+    { cat: "teaching", title: "Plan a class session",
+      text: "Plan a [length]-minute class session on [topic] for [course name]. Include a short opener, one active learning activity, a quick check for understanding, and a closing question. List any materials I need to prepare." },
+    { cat: "office", title: "Reply to an email",
+      text: "Help me reply to the email below. Keep the reply warm, clear, and under 120 words. Point the reader to [resource, office, or policy]. I removed all names and personal details.\n\n[paste the email]" },
+    { cat: "office", title: "Summarize meeting notes",
+      text: "Turn the notes below into a one-page summary with three parts. Decisions made. Action items with an owner and due date for each. Open questions.\n\n[paste your notes]" },
+    { cat: "office", title: "Summarize a long report",
+      text: "Summarize the report below for a busy [dean, chair, or committee]. Give the three main points, any numbers that matter, and what we need to decide. Keep it under 200 words.\n\n[paste the report]" },
+    { cat: "office", title: "Write an announcement",
+      text: "Write a friendly announcement for [event] on [date] at [place]. The audience is [students, faculty, or staff]. Keep it under 100 words and end with one clear next step." }
+  ];
+  const CAT_LABEL = { teaching: "Teaching", office: "Office work" };
+
+  const list = document.getElementById("prompt-list");
+  const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  PROMPTS.forEach((p, i) => {
+    const card = document.createElement("article");
+    card.className = "prompt";
+    card.dataset.cat = p.cat;
+    card.innerHTML =
+      `<header><h3>${escapeHtml(p.title)}</h3><span class="cat">${CAT_LABEL[p.cat]}</span></header>` +
+      `<pre>${escapeHtml(p.text).replace(/\[([^\]]+)\]/g, "<mark>[$1]</mark>")}</pre>` +
+      `<button type="button" class="btn" id="copy-${i}">Copy prompt</button>`;
+    card.querySelector("button").addEventListener("click", e => copyText(p.text, e.currentTarget));
+    list.appendChild(card);
+  });
+
+  async function copyText(text, btn) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+    }
+    btn.textContent = "Copied";
+    setTimeout(() => { btn.textContent = "Copy prompt"; }, 1800);
+  }
+
+  document.querySelectorAll(".filters button").forEach(b => {
+    b.addEventListener("click", () => {
+      document.querySelectorAll(".filters button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+      const f = b.dataset.filter;
+      list.querySelectorAll(".prompt").forEach(c => { c.hidden = f !== "all" && c.dataset.cat !== f; });
+    });
+  });
+
+  // Remember checklist progress on this device.
+  document.querySelectorAll(".checklist input").forEach(box => {
+    const key = "cau-ai-" + box.id;
+    try { box.checked = localStorage.getItem(key) === "1"; } catch {}
+    box.addEventListener("change", () => { try { localStorage.setItem(key, box.checked ? "1" : "0"); } catch {} });
+  });
+</script>
+</body>
+</html>
