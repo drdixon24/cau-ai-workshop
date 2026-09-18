@@ -363,10 +363,11 @@
     <div class="wrap">
       <p class="kicker">Copy and paste</p>
       <h2>Prompt starters</h2>
-      <p class="intro">Copy a prompt, paste it into Claude, and replace the red parts with your own details.</p>
+      <p class="intro">The four we use in the workshop are here first. Copy one, paste it into Claude, and replace the red parts with your own details. Tap <b>All</b> for the rest.</p>
 
       <div class="filters" role="group" aria-label="Filter prompts">
-        <button type="button" id="filter-all" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" id="filter-workshop" data-filter="workshop" aria-pressed="true">From the workshop</button>
+        <button type="button" id="filter-all" data-filter="all" aria-pressed="false">All</button>
         <button type="button" id="filter-teaching" data-filter="teaching" aria-pressed="false">Teaching</button>
         <button type="button" id="filter-office" data-filter="office" aria-pressed="false">Office work</button>
       </div>
@@ -479,13 +480,13 @@
 <script>
   // Prompt starters. Text inside [brackets] is shown in red for people to replace.
   const PROMPTS = [
-    { cat: "teaching", title: "Let AI interview you first",
+    { cat: "workshop", title: "Let AI interview you first",
       text: "I need to [describe your task]. Before you write anything, ask me questions one at a time until you have what you need. Ask no more than 5." },
-    { cat: "teaching", title: "Make it fix its own draft",
+    { cat: "workshop", title: "Make it fix its own draft",
       text: "Now point out the 3 weakest parts of your draft and fix them." },
-    { cat: "teaching", title: "Stress-test an assignment",
+    { cat: "workshop", title: "Stress-test an assignment",
       text: "Here is an assignment from [course name]. First, complete it the way a student relying only on AI would. Then tell me which parts AI handled easily. Finally, suggest 3 changes that need the student's own thinking or in-class work, without making it harder to grade.\n\n[paste the assignment]" },
-    { cat: "office", title: "Read it as a new student",
+    { cat: "workshop", title: "Read it as a new student",
       text: "Read this [form, policy, or email] as a first-generation, first-year student. What is confusing? What would you ask? Then rewrite it so none of those questions come up.\n\n[paste the text]" },
     { cat: "teaching", title: "Draft a syllabus",
       text: "You are an experienced professor at an HBCU. Draft a syllabus for [course name and number], a [level] course that meets [days and times] for [number] weeks. Include learning outcomes, a weekly schedule, a grading breakdown, and course policies. Write in plain language a first-year student will understand. Keep it under three pages." },
@@ -504,7 +505,7 @@
     { cat: "office", title: "Write an announcement",
       text: "Write a friendly announcement for [event] on [date] at [place]. The audience is [students, faculty, or staff]. Keep it under 100 words and end with one clear next step." }
   ];
-  const CAT_LABEL = { teaching: "Teaching", office: "Office work" };
+  const CAT_LABEL = { workshop: "From the workshop", teaching: "Teaching", office: "Office work" };
 
   const list = document.getElementById("prompt-list");
   const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -533,13 +534,17 @@
     setTimeout(() => { btn.textContent = "Copy prompt"; }, 1800);
   }
 
+  function applyFilter(f) {
+    list.querySelectorAll(".prompt").forEach(c => { c.hidden = f !== "all" && c.dataset.cat !== f; });
+  }
   document.querySelectorAll(".filters button").forEach(b => {
     b.addEventListener("click", () => {
       document.querySelectorAll(".filters button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
-      const f = b.dataset.filter;
-      list.querySelectorAll(".prompt").forEach(c => { c.hidden = f !== "all" && c.dataset.cat !== f; });
+      applyFilter(b.dataset.filter);
     });
   });
+  // Land on the workshop prompts, not on all twelve.
+  applyFilter(document.querySelector('.filters button[aria-pressed="true"]').dataset.filter);
 
   // Remember checklist progress on this device.
   document.querySelectorAll(".checklist input").forEach(box => {
