@@ -228,6 +228,28 @@
   .howto kbd, .starter kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; background: var(--ground); }
   .prompt .note { margin: -4px 0 0; color: var(--stone); font-size: .9rem; }
 
+  .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+  .how div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .how h3 { font-size: 1.02rem; }
+  .how p { margin: 6px 0 0; color: var(--stone); font-size: .96rem; }
+  .how p b { color: var(--ink); }
+  .compare-wrap { margin-top: 28px; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .compare { border-collapse: collapse; width: 100%; min-width: 760px; font-size: .95rem; }
+  .compare th, .compare td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .compare thead th { font-family: var(--display); font-size: 1.1rem; color: var(--ink); border-bottom: 2px solid var(--red); }
+  .compare tbody th { color: var(--stone); font-weight: 700; width: 18%; }
+  .compare tr:last-child th, .compare tr:last-child td { border-bottom: 0; }
+  .compare td small { display: block; color: var(--stone); }
+  .picks { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; }
+  .picks li { border-top: 2px solid var(--line); padding-top: 10px; }
+  .picks b { display: block; }
+  .picks span { color: var(--stone); font-size: .97rem; }
+  .bottom-line { margin-top: 24px; background: var(--blush); border-radius: 12px; padding: 18px 22px; }
+  .bottom-line p { margin: 0; }
+  .bottom-line p + p { margin-top: 8px; color: var(--stone); font-size: .93rem; }
+  .src { margin-top: 14px; color: var(--stone); font-size: .88rem; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   footer { margin-top: 64px; border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--stone); font-size: .92rem; }
   footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
@@ -238,6 +260,8 @@
     .rules div:nth-child(3) { padding-left: 0; border-left: 0; }
     .res-grid, .materials { grid-template-columns: 1fr; }
     .starter-grid { grid-template-columns: 1fr 1fr; }
+    .how { grid-template-columns: 1fr 1fr; }
+    .picks { grid-template-columns: 1fr; }
     .prompts { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
@@ -248,6 +272,7 @@
     .rules div, .rules div + div { padding-left: 0; border-left: 0; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
     .presenter { grid-template-columns: 1fr; }
     .starter-grid { grid-template-columns: 1fr; }
+    .how { grid-template-columns: 1fr; }
     .session .time { font-size: 1.35rem; }
   }
 </style>
@@ -262,6 +287,7 @@
         <li><a href="#oct15">Oct 15 session</a></li>
         <li><a href="#setup">Get set up</a></li>
         <li><a href="#prompts">Prompts</a></li>
+        <li><a href="#compare">Compare tools</a></li>
         <li><a href="#resources">Resources</a></li>
         <li><a href="#materials">Materials</a></li>
         <li><a href="vscode-setup.html">VS Code guide (advanced)</a></li>
@@ -311,7 +337,7 @@
           <div>
             <h4>What it is</h4>
             <p><b>Claude</b> is an AI tool. It's a website, <b>claude.ai</b>, like any other website. You type a request in ordinary sentences, and it writes back.</p>
-            <p>ChatGPT, Microsoft Copilot, and Google Gemini work the same way.</p>
+            <p>ChatGPT, Microsoft Copilot, and Google Gemini work the same way. <a href="#compare">See how they compare.</a></p>
           </div>
           <div>
             <h4>Words you'll see</h4>
@@ -473,6 +499,61 @@
       </div>
 
       <div class="prompts" id="prompt-list"></div>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="wrap">
+      <p class="kicker">Choosing a tool</p>
+      <h2>Claude, ChatGPT, Gemini, or Copilot?</h2>
+      <p class="intro">They are more alike than different. Here is what is going on under the hood, where they differ, and which fits your subject. Checked October 15, 2026. These tools change every few months, so model names especially will go out of date.</p>
+
+      <h3 class="mat-head" style="margin:28px 0 -10px">How they all work</h3>
+      <div class="how">
+        <div><h3>The same core technology</h3><p>Each is a <b>large language model</b>: trained on huge amounts of text to predict the next word. That is why it writes so smoothly, and why it can sound sure and still be wrong.</p></div>
+        <div><h3>Bigger and smaller models</h3><p>Each company has a <b>strongest model</b> (slower, more careful) and <b>faster, smaller</b> ones. Free plans mostly get the faster ones. Paying mainly buys the strongest model and higher limits.</p></div>
+        <div><h3>Thinking mode</h3><p>The model <b>works step by step before it answers</b>. Slower, but better for math, logic, and grading. All four have one.</p></div>
+        <div><h3>What it knows</h3><p>It learned from text up to a <b>cutoff date</b>. For anything recent it <b>searches the web</b>, and then it is only as good as the pages it finds. Open its sources.</p></div>
+        <div><h3>Working memory</h3><p>Each chat holds a limited amount of text (the <b>context window</b>). In very long chats or huge files, early parts can get lost. Start a <b>New chat</b> for each new task.</p></div>
+        <div><h3>Your privacy setting</h3><p>Personal accounts may <b>use your chats to improve the AI</b> unless you turn that off. School and work versions usually do not. That is why student work goes only into a tool CAU approves.</p></div>
+      </div>
+
+      <div class="compare-wrap" role="region" aria-label="Comparison table, scrolls sideways on small screens" tabindex="0">
+        <table class="compare">
+          <thead>
+            <tr><th scope="col"><span class="sr-only">Feature</span></th><th scope="col">Claude</th><th scope="col">ChatGPT</th><th scope="col">Gemini</th><th scope="col">Microsoft Copilot</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Made by</th><td>Anthropic</td><td>OpenAI</td><td>Google</td><td>Microsoft <small>Built on OpenAI's GPT models</small></td></tr>
+            <tr><th scope="row">Where</th><td>claude.ai</td><td>chatgpt.com</td><td>gemini.google.com</td><td>m365copilot.com <small>Sign in with your CAU account</small></td></tr>
+            <tr><th scope="row">Free version runs</th><td>Claude Sonnet and Haiku</td><td>GPT-5.6 Luna</td><td>Gemini Flash-Lite</td><td>Included with eligible Microsoft 365 school accounts <small>Ask CAU IT whether yours is</small></td></tr>
+            <tr><th scope="row">Paying adds</th><td>Claude Opus, Research, more use <small>Pro: $20 a month</small></td><td>GPT-6, deeper thinking levels, more use <small>Go, Plus, or Pro plans</small></td><td>Gemini Pro model, very long documents (1 million tokens), more use <small>Google AI Pro: $19.99 a month</small></td><td>Copilot inside Word, Excel, and PowerPoint with your files <small>License bought by the school</small></td></tr>
+            <tr><th scope="row">Searches the web</th><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><th scope="row">Reads your files and photos</th><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><th scope="row">Makes pictures</th><td>No <small>Makes charts and diagrams instead</small></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><th scope="row">Long research reports with sources</th><td>Paid plan (Research)</td><td>Yes (deep research)</td><td>Yes, even free (Deep Research)</td><td>Paid license</td></tr>
+            <tr><th scope="row">Do your chats train the AI?</th><td>Your choice <small>Settings, then Privacy</small></td><td>Yes, unless you turn it off <small>Settings, then Data controls</small></td><td>Yes, while Keep Activity is on <small>Some chats are read by human reviewers</small></td><td>No, when signed in with a school account <small>Enterprise data protection</small></td></tr>
+            <tr><th scope="row">Works inside</th><td>Its own website and app</td><td>Its own website and app</td><td>Google apps: Gmail, Docs, Drive</td><td>Microsoft apps: Outlook, Teams, Word</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="mat-head" style="margin:32px 0 -12px">Which fits your subject?</h3>
+      <ul class="picks">
+        <li><b>Math, statistics, physics, chemistry, engineering</b><span>Any of the four. Turn on thinking mode, and add "Use code to check the arithmetic." It predicts text, so numbers can slip unless it calculates. Check every step.</span></li>
+        <li><b>Writing-heavy courses: English, history, education, social work</b><span>Any of the four. Paste the same prompt into two of them and keep the voice you like better.</span></li>
+        <li><b>Research and current events</b><span>Use web search or a research report: Gemini Deep Research (free), ChatGPT deep research, or Claude Research (paid). Open every source. AI sometimes cites pages that don't say what it claims.</span></li>
+        <li><b>Long documents: accreditation reports, grants, book chapters</b><span>Paid versions read far more at once. On a free plan, split a long file into parts.</span></li>
+        <li><b>Art, design, and pictures for slides</b><span>ChatGPT, Gemini, or Copilot make pictures. Claude makes charts and diagrams, not pictures. Check scientific images closely; labels often come out wrong.</span></li>
+        <li><b>Email, meeting notes, Office files</b><span>Copilot lives in Outlook and Teams. Gemini lives in Gmail and Google Docs.</span></li>
+        <li><b>Anything about students: names, grades, their work</b><span>Only a tool CAU approves. CAU's sign-in runs through Microsoft, so Copilot Chat with your CAU login may be the protected option. Ask IT to confirm before you use it with student information.</span></li>
+      </ul>
+
+      <div class="bottom-line">
+        <p><b>The bottom line:</b> for most teaching tasks, the four are closer than the ads suggest. The best one is the one you will actually use, with the privacy setting you want. Pick one and learn it well. When the stakes are high, ask a second one the same question.</p>
+        <p>Today's workshop used Claude, and this comparison sticks to facts from each company's own pages.</p>
+      </div>
+      <p class="src">Sources: <a href="https://claude.com/pricing" target="_blank" rel="noopener">Claude plans</a> · <a href="https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq" target="_blank" rel="noopener">ChatGPT free tier</a> · <a href="https://help.openai.com/en/articles/20001354-gpt-6-and-other-models-in-chatgpt" target="_blank" rel="noopener">ChatGPT models</a> · <a href="https://gemini.google/subscriptions/" target="_blank" rel="noopener">Gemini plans</a> · <a href="https://learn.microsoft.com/en-us/copilot/overview" target="_blank" rel="noopener">Copilot Chat overview</a> · <a href="https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt" target="_blank" rel="noopener">ChatGPT data controls</a> · <a href="https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training" target="_blank" rel="noopener">Claude training data</a> · <a href="https://support.google.com/gemini/answer/13594961?hl=en" target="_blank" rel="noopener">Gemini privacy</a> · <a href="https://support.microsoft.com/en-us/privacy/data-protection-when-using-microsoft-365-copilot-chat-for-work-or-school" target="_blank" rel="noopener">Copilot data protection</a></p>
     </div>
   </section>
 
