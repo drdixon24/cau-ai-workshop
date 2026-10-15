@@ -205,6 +205,14 @@
   .presenter .role { margin: 2px 0 10px; color: var(--stone); }
   .presenter p.bio { margin: 0; max-width: 68ch; }
 
+  .hero a { color: var(--on-red); }
+  .mat-head { margin: 30px 0 -14px; font-size: 1.05rem; color: var(--stone); letter-spacing: .02em; }
+  .callout { margin-top: 20px; background: var(--blush); border-radius: 12px; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .callout h3 { font-size: 1.15rem; }
+  .callout p { margin: 4px 0 0; color: var(--stone); max-width: 62ch; }
+  .contact-line { margin: 18px 0 0; font-size: 1.05rem; }
+  .contact-line a, .presenter .role a, footer a { font-weight: 700; }
+
   footer { margin-top: 64px; border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--stone); font-size: .92rem; }
   footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
@@ -234,6 +242,7 @@
     <a class="logo-plate" href="#top" aria-label="Back to top"><img src="assets/cau-math-logo.png" alt="Clark Atlanta University, Department of Mathematical Sciences"></a>
     <nav aria-label="Sections">
       <ul>
+        <li><a href="#oct15">Oct 15 session</a></li>
         <li><a href="#setup">Get set up</a></li>
         <li><a href="#prompts">Prompts</a></li>
         <li><a href="#resources">Resources</a></li>
@@ -249,7 +258,7 @@
     <div>
       <p class="kicker">Faculty and Staff Workshop, Fall 2026</p>
       <h1>Less prep. <span>More time for what matters.</span></h1>
-      <p class="lede">Everything you need for the workshop lives on this page. Come back to it any time.</p>
+      <p class="lede">Everything from both sessions lives on this page. Come back to it any time. Questions? Email <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a>.</p>
     </div>
     <div class="sessions">
       <div class="session">
@@ -263,7 +272,7 @@
       <div class="session">
         <div class="cal" aria-hidden="true"><div class="mon">Oct</div><div class="day">15</div><div class="dow">Thursday</div></div>
         <div>
-          <p class="label">Follow-up session</p>
+          <p class="label">Follow-up: grading with AI</p>
           <p class="time">12:30 PM</p>
           <p class="place">Thursday, October 15<br>McPheeters-Dennis Hall, Room 150B</p>
         </div>
@@ -273,11 +282,45 @@
 </header>
 
 <main>
+  <section id="oct15">
+    <div class="wrap">
+      <p class="kicker">October 15 follow-up</p>
+      <h2>Leave with a rubric you trust</h2>
+      <p class="intro">Everything from the follow-up session, in one place. You don't need an account to open, print, or save any of it.</p>
+      <div class="materials">
+        <div class="material">
+          <h3>Take-home packet</h3>
+          <p>Six pages, one step per page: log in, build a rubric, remake a question, make a review slide, and what to do if you get stuck. Print it double-sided.</p>
+          <a class="btn solid" href="materials/Oct15-Take-Home-Packet.pdf" target="_blank" rel="noopener">Open the packet</a>
+        </div>
+        <div class="material">
+          <h3>Practice grading sheet</h3>
+          <p>"You vs. the AI": the exam question, the rubric, and two answers to grade yourself. Based on real answers, rewritten so no student can be identified.</p>
+          <a class="btn" href="materials/Oct15-Practice-Grading-Sheet.pdf" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+        <div class="material">
+          <h3>Today's prompts</h3>
+          <p>Build a rubric, grade with your rubric, fix a rubric line, remake a question, and make a review slide. Copy any of them with one click.</p>
+          <a class="btn" href="#prompts">Go to the prompts</a>
+        </div>
+      </div>
+      <div class="callout">
+        <div>
+          <h3>School of Science grading pilot</h3>
+          <p>Try first-pass grading on one low-stakes assignment this semester, with my help. The AI drafts; you approve every grade. Always optional.</p>
+        </div>
+        <a class="btn solid" href="mailto:ddixon1@cau.edu?subject=Grading%20pilot">Email me to join</a>
+      </div>
+      <p class="contact-line">Questions about anything from the session? Email <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a>. No question is too basic.</p>
+    </div>
+  </section>
+
   <section id="setup">
     <div class="wrap">
       <p class="kicker">Step by step</p>
       <h2>Get set up</h2>
       <p class="intro">Tick each box as you go. This page remembers your progress on this device.</p>
+      <p class="hint">Coming on October 15? There is nothing to set up. Nobody logs in during the session: I do the typing, you do the judging.</p>
 
       <div class="setup-grid">
         <div class="group">
@@ -363,10 +406,11 @@
     <div class="wrap">
       <p class="kicker">Copy and paste</p>
       <h2>Prompt starters</h2>
-      <p class="intro">The four we use in the workshop are here first. Copy one, paste it into Claude, and replace the red parts with your own details. Tap <b>All</b> for the rest.</p>
+      <p class="intro">The prompts from the October 15 session are here first. Copy one, paste it into Claude, and replace the red parts with your own details. Tap <b>All</b> for the rest.</p>
 
       <div class="filters" role="group" aria-label="Filter prompts">
-        <button type="button" id="filter-workshop" data-filter="workshop" aria-pressed="true">From the workshop</button>
+        <button type="button" id="filter-oct15" data-filter="oct15" aria-pressed="true">From Oct 15</button>
+        <button type="button" id="filter-workshop" data-filter="workshop" aria-pressed="false">From Sept 18</button>
         <button type="button" id="filter-all" data-filter="all" aria-pressed="false">All</button>
         <button type="button" id="filter-teaching" data-filter="teaching" aria-pressed="false">Teaching</button>
         <button type="button" id="filter-office" data-filter="office" aria-pressed="false">Office work</button>
@@ -428,22 +472,23 @@
     <div class="wrap">
       <p class="kicker">Downloads</p>
       <h2>Session materials</h2>
-      <p class="intro">Handouts and kits live here. Slides go up after each session, so there is no need to wait for an email.</p>
+      <p class="intro">Handouts and slides from both sessions. Slides go up after each session, so there is no need to wait for an email.</p>
+      <h3 class="mat-head">October 15: grading with AI</h3>
       <div class="materials">
         <div class="material">
-          <h3>Workshop flyer</h3>
-          <p>Dates, room, and what to bring.</p>
-          <a class="btn" href="materials/AI-Workshop-Flyer.pdf" target="_blank" rel="noopener">Open PDF</a>
+          <h3>Take-home packet</h3>
+          <p>Six pages, one step per page. Print it double-sided.</p>
+          <a class="btn solid" href="materials/Oct15-Take-Home-Packet.pdf" target="_blank" rel="noopener">Open PDF</a>
         </div>
         <div class="material">
-          <h3>Course Build Kit</h3>
-          <p>Modernize one course for the AI age: all the mathematics, harder, with the thinking still theirs. Start with the one-page sheet inside. CAU required syllabus statements are already included, and a real week of Calculus I is in there so you can see what comes out. Word, Overleaf, or PDF. Mac or Windows.</p>
-          <a class="btn solid" href="materials/Course-Build-Kit.zip" download>Download the kit</a>
+          <h3>Practice grading sheet</h3>
+          <p>"You vs. the AI": grade two answers yourself, then compare.</p>
+          <a class="btn" href="materials/Oct15-Practice-Grading-Sheet.pdf" target="_blank" rel="noopener">Open PDF</a>
         </div>
         <div class="material">
-          <h3>Workshop slides</h3>
-          <p>Talk. Test. Build. All 24 slides from the September 18 session.</p>
-          <a class="btn" href="materials/Workshop-Slides-Sept-18.pdf" target="_blank" rel="noopener">Open PDF</a>
+          <h3>Follow-up flyer</h3>
+          <p>Date, room, and what the session covers.</p>
+          <a class="btn" href="materials/Oct15-Flyer.pdf" target="_blank" rel="noopener">Open PDF</a>
         </div>
         <div class="material pending">
           <h3>Follow-up slides</h3>
@@ -451,6 +496,25 @@
           <span class="soon">Posted after Oct 15</span>
         </div>
       </div>
+      <h3 class="mat-head">September 18: the first workshop</h3>
+      <div class="materials">
+        <div class="material">
+          <h3>Workshop slides</h3>
+          <p>Talk. Test. Build. All 24 slides from the September 18 session.</p>
+          <a class="btn" href="materials/Workshop-Slides-Sept-18.pdf" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+        <div class="material">
+          <h3>Course Build Kit</h3>
+          <p>Modernize one course for the AI age: all the mathematics, harder, with the thinking still theirs. Start with the one-page sheet inside. CAU required syllabus statements are already included, and a real week of Calculus I is in there so you can see what comes out. Word, Overleaf, or PDF. Mac or Windows.</p>
+          <a class="btn solid" href="materials/Course-Build-Kit.zip" download>Download the kit</a>
+        </div>
+        <div class="material">
+          <h3>Workshop flyer</h3>
+          <p>Dates, room, and what to bring.</p>
+          <a class="btn" href="materials/AI-Workshop-Flyer.pdf" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+      </div>
+      <p class="contact-line">Can't find something? Email <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a>.</p>
     </div>
   </section>
 
@@ -462,7 +526,7 @@
         <img src="assets/dixon.jpg" alt="Dr. Dewayne A. Dixon" width="150" height="188">
         <div>
           <h3>Dr. Dewayne A. Dixon</h3>
-          <p class="role">Assistant Professor, Department of Mathematical Sciences</p>
+          <p class="role">Assistant Professor, Department of Mathematical Sciences · <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a></p>
           <p class="bio">Dr. Dixon holds a PhD in Mathematics from Howard University and a BS from Morehouse College. He gives talks on how to use generative AI and on the mathematics behind how AI models are built. Through the AUC Data Science Initiative, he has trained faculty at HBCUs across the country. His research uses machine learning to study complex biological data, such as DNA markers of PTSD.</p>
         </div>
       </div>
@@ -473,13 +537,23 @@
 <footer>
   <div class="wrap">
     <span>Clark Atlanta University, Department of Mathematical Sciences</span>
-    <span>Faculty and Staff AI Workshop, Fall 2026</span>
+    <span>Faculty and Staff AI Workshop, Fall 2026 · <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a></span>
   </div>
 </footer>
 
 <script>
   // Prompt starters. Text inside [brackets] is shown in red for people to replace.
   const PROMPTS = [
+    { cat: "oct15", title: "Build a rubric",
+      text: "Make a [5]-point rubric with partial credit for this question. Students must show all work. List the most common mistakes.\n\n[paste your question and answer key]" },
+    { cat: "oct15", title: "Grade with your rubric (first pass)",
+      text: "Help me grade these answers. Use only my rubric.\n\nRUBRIC:\n[paste your rubric]\n\nFor each answer: score each rubric line, give the total, write one sentence of feedback to the student, and flag any score you are unsure about.\n\nANSWER A:\n[paste an answer with no names or ID numbers]\n\nANSWER B:\n[paste the next answer]" },
+    { cat: "oct15", title: "Fix a rubric line",
+      text: "Item [2] is [too harsh or too generous]. [Say what should and should not earn the point.] Re-score." },
+    { cat: "oct15", title: "Remake a question",
+      text: "Write two new versions of this question. Same skill, same difficulty. Include a strong answer for each." },
+    { cat: "oct15", title: "Make a review slide",
+      text: "Turn this question into one review slide: the main idea, an example, and the most common mistake." },
     { cat: "workshop", title: "Let AI interview you first",
       text: "I need to [describe your task]. Before you write anything, ask me questions one at a time until you have what you need. Ask no more than 5." },
     { cat: "workshop", title: "Make it fix its own draft",
@@ -505,7 +579,7 @@
     { cat: "office", title: "Write an announcement",
       text: "Write a friendly announcement for [event] on [date] at [place]. The audience is [students, faculty, or staff]. Keep it under 100 words and end with one clear next step." }
   ];
-  const CAT_LABEL = { workshop: "From the workshop", teaching: "Teaching", office: "Office work" };
+  const CAT_LABEL = { oct15: "From Oct 15", workshop: "From Sept 18", teaching: "Teaching", office: "Office work" };
 
   const list = document.getElementById("prompt-list");
   const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -543,7 +617,7 @@
       applyFilter(b.dataset.filter);
     });
   });
-  // Land on the workshop prompts, not on all twelve.
+  // Land on the newest session's prompts, not on all of them.
   applyFilter(document.querySelector('.filters button[aria-pressed="true"]').dataset.filter);
 
   // Remember checklist progress on this device.
