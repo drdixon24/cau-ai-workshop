@@ -213,6 +213,21 @@
   .contact-line { margin: 18px 0 0; font-size: 1.05rem; }
   .contact-line a, .presenter .role a, footer a { font-weight: 700; }
 
+  .starter { margin-top: 24px; background: var(--surface); border: 2px solid var(--red); border-radius: 14px; padding: 22px 24px 24px; }
+  .starter > h3 { font-size: 1.35rem; font-weight: 800; }
+  .starter > p { margin: 4px 0 0; color: var(--stone); max-width: 68ch; }
+  .starter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 16px; }
+  .starter-grid h4 { margin: 0; font-family: var(--display); font-size: 1.05rem; color: var(--red); }
+  .starter-grid p, .starter-grid dl { margin: 6px 0 0; font-size: .97rem; }
+  .starter-grid dt { font-weight: 700; margin-top: 6px; }
+  .starter-grid dd { margin: 0; color: var(--stone); }
+  .starter-grid ol { margin: 6px 0 0; padding-left: 1.2em; font-size: .97rem; }
+  .starter-grid li + li { margin-top: 4px; }
+  .howto { margin: 18px 0 0; padding: 16px 20px 16px 2.4em; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; max-width: 760px; }
+  .howto li + li { margin-top: 4px; }
+  .howto kbd, .starter kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; background: var(--ground); }
+  .prompt .note { margin: -4px 0 0; color: var(--stone); font-size: .9rem; }
+
   footer { margin-top: 64px; border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--stone); font-size: .92rem; }
   footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
@@ -222,6 +237,7 @@
     .rules { grid-template-columns: 1fr 1fr; }
     .rules div:nth-child(3) { padding-left: 0; border-left: 0; }
     .res-grid, .materials { grid-template-columns: 1fr; }
+    .starter-grid { grid-template-columns: 1fr 1fr; }
     .prompts { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
@@ -231,6 +247,7 @@
     .recipe, .rules { grid-template-columns: 1fr; }
     .rules div, .rules div + div { padding-left: 0; border-left: 0; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
     .presenter { grid-template-columns: 1fr; }
+    .starter-grid { grid-template-columns: 1fr; }
     .session .time { font-size: 1.35rem; }
   }
 </style>
@@ -247,7 +264,7 @@
         <li><a href="#prompts">Prompts</a></li>
         <li><a href="#resources">Resources</a></li>
         <li><a href="#materials">Materials</a></li>
-        <li><a href="vscode-setup.html">VS Code guide</a></li>
+        <li><a href="vscode-setup.html">VS Code guide (advanced)</a></li>
       </ul>
     </nav>
   </div>
@@ -287,10 +304,42 @@
       <p class="kicker">October 15 follow-up</p>
       <h2>Leave with a rubric you trust</h2>
       <p class="intro">Everything from the follow-up session, in one place. You don't need an account to open, print, or save any of it.</p>
+      <div class="starter" id="new-to-ai">
+        <h3>New to AI? Start here.</h3>
+        <p>Never used one of these tools? That's fine. Most people in the room hadn't either. Here is all you need to know.</p>
+        <div class="starter-grid">
+          <div>
+            <h4>What it is</h4>
+            <p><b>Claude</b> is an AI tool. It's a website, <b>claude.ai</b>, like any other website. You type a request in ordinary sentences, and it writes back.</p>
+            <p>ChatGPT, Microsoft Copilot, and Google Gemini work the same way.</p>
+          </div>
+          <div>
+            <h4>Words you'll see</h4>
+            <dl>
+              <dt>Prompt</dt><dd>The words you type to it.</dd>
+              <dt>Chat</dt><dd>One conversation. It remembers what you typed earlier in it.</dd>
+              <dt>New chat</dt><dd>A blank page. It starts over.</dd>
+            </dl>
+          </div>
+          <div>
+            <h4>Cost and safety</h4>
+            <p><b>Free to start.</b> The free plan is enough for everything from October 15. Free accounts have a daily limit.</p>
+            <p><b>Safe to paste:</b> your own questions, rubrics, and answer keys. <b>Never:</b> student names, ID numbers, grades, or student work. I'm asking CAU IT which tool is approved for real student work.</p>
+          </div>
+          <div>
+            <h4>Try it in 10 minutes</h4>
+            <ol>
+              <li>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and make a free account (packet page 2).</li>
+              <li>Copy the <a href="#prompts">"Build a rubric"</a> prompt below.</li>
+              <li>Paste it in the box. Swap the red part for one of your questions, then press <kbd>Enter</kbd>.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
       <div class="materials">
         <div class="material">
           <h3>Take-home packet</h3>
-          <p>Six pages, one step per page: log in, build a rubric, remake a question, make a review slide, and what to do if you get stuck. Print it double-sided.</p>
+          <p>Six pages, one step per page: make a free account, build a rubric, remake a question, make a review slide, and what to do if you get stuck. Print it double-sided.</p>
           <a class="btn solid" href="materials/Oct15-Take-Home-Packet.pdf" target="_blank" rel="noopener">Open the packet</a>
         </div>
         <div class="material">
@@ -299,15 +348,15 @@
           <a class="btn" href="materials/Oct15-Practice-Grading-Sheet.pdf" target="_blank" rel="noopener">Open PDF</a>
         </div>
         <div class="material">
-          <h3>Today's prompts</h3>
-          <p>Build a rubric, grade with your rubric, fix a rubric line, remake a question, and make a review slide. Copy any of them with one click.</p>
+          <h3>Prompts from the session</h3>
+          <p>Ready-made words to paste into Claude: build a rubric, check scores, fix a rubric line, remake a question, and make a review slide.</p>
           <a class="btn" href="#prompts">Go to the prompts</a>
         </div>
       </div>
       <div class="callout">
         <div>
           <h3>School of Science grading pilot</h3>
-          <p>Try first-pass grading on one low-stakes assignment this semester, with my help. The AI drafts; you approve every grade. Always optional.</p>
+          <p>Try AI-assisted grading on one low-stakes assignment this semester, on a tool the university approves, with my help. The AI suggests scores; you approve every grade. Always optional.</p>
         </div>
         <a class="btn solid" href="mailto:ddixon1@cau.edu?subject=Grading%20pilot">Email me to join</a>
       </div>
@@ -324,38 +373,38 @@
 
       <div class="setup-grid">
         <div class="group">
-          <h3>Before the workshop</h3>
-          <p class="when">About 10 minutes</p>
+          <h3>Start here</h3>
+          <p class="when">About 10 minutes. Only the first box is needed.</p>
           <ul class="checklist">
             <li>
               <input type="checkbox" id="step-account">
               <div>
                 <label for="step-account">Create a Claude account</label>
-                <p>Sign up with your email or Google account.</p>
+                <p>Free. Sign up with your email or Google account. Page 2 of the packet walks you through it.</p>
                 <a class="btn solid" href="https://claude.ai/login" target="_blank" rel="noopener">Sign up for Claude</a>
               </div>
             </li>
             <li>
               <input type="checkbox" id="step-plan">
               <div>
-                <label for="step-plan">Upgrade to a paid plan <span class="tag">Recommended</span></label>
-                <p>The Pro plan gives you much more use each day and the full set of features.</p>
+                <label for="step-plan">Upgrade to a paid plan <span class="tag">Optional</span></label>
+                <p>Not needed to start. The free plan is enough for everything from October 15. A paid plan gives you more use each day.</p>
                 <a class="btn" href="https://claude.com/pricing" target="_blank" rel="noopener">Compare plans</a>
               </div>
             </li>
             <li>
               <input type="checkbox" id="step-laptop">
               <div>
-                <label for="step-laptop">Charge your laptop and bring it</label>
-                <p>We work hands-on the whole time.</p>
+                <label for="step-laptop">Bring a laptop to hands-on sessions</label>
+                <p>Not needed on October 15. I do the typing in that session.</p>
               </div>
             </li>
           </ul>
         </div>
 
         <div class="group">
-          <h3>For the hands-on part</h3>
-          <p class="when">Optional before you arrive. We can do it together.</p>
+          <h3>Advanced, from September 18</h3>
+          <p class="when">Skip this if you're new. Nothing from October 15 needs it.</p>
           <ul class="checklist">
             <li>
               <input type="checkbox" id="step-desktop">
@@ -391,9 +440,9 @@
     <div class="wrap">
       <p class="kicker">Better results</p>
       <h2>The prompt recipe</h2>
-      <p class="intro">Claude works best when you brief it like a new colleague. Give it these five things.</p>
+      <p class="intro">A prompt is the words you type to Claude. You get better results when you tell it these five things, the way you would brief a new colleague.</p>
       <ol class="recipe">
-        <li><span class="letter">R</span><b>Role</b><span class="say">Who should it act as?</span></li>
+        <li><span class="letter">R</span><b>Role</b><span class="say">Who should it act as? For example, "an experienced math professor."</span></li>
         <li><span class="letter">C</span><b>Context</b><span class="say">What does it need to know?</span></li>
         <li><span class="letter">A</span><b>Audience</b><span class="say">Who will read the result?</span></li>
         <li><span class="letter">T</span><b>Tone</b><span class="say">How should it sound?</span></li>
@@ -406,7 +455,14 @@
     <div class="wrap">
       <p class="kicker">Copy and paste</p>
       <h2>Prompt starters</h2>
-      <p class="intro">The prompts from the October 15 session are here first. Copy one, paste it into Claude, and replace the red parts with your own details. Tap <b>All</b> for the rest.</p>
+      <p class="intro">A prompt is the words you type to Claude. These are ready to use. The ones from October 15 are shown first. Click <b>All</b> to see every prompt.</p>
+      <ol class="howto">
+        <li>Click <b>Copy prompt</b> under the one you want.</li>
+        <li>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and click in the box at the bottom.</li>
+        <li>Paste it: <kbd>Ctrl</kbd> + <kbd>V</kbd> on Windows, <kbd>Command</kbd> + <kbd>V</kbd> on a Mac.</li>
+        <li>Replace each red <b>[part in brackets]</b> with your own words, and delete the brackets.</li>
+        <li>Press <kbd>Enter</kbd> to send. Wait up to a minute. (For a new line without sending, hold <kbd>Shift</kbd> and press <kbd>Enter</kbd>.)</li>
+      </ol>
 
       <div class="filters" role="group" aria-label="Filter prompts">
         <button type="button" id="filter-oct15" data-filter="oct15" aria-pressed="true">From Oct 15</button>
@@ -425,7 +481,7 @@
       <p class="kicker">Use it well</p>
       <h2>Four habits to keep</h2>
       <div class="rules">
-        <div><h3>Protect privacy</h3><p>Leave out student names, grades, and ID numbers. FERPA still applies.</p></div>
+        <div><h3>Protect privacy</h3><p>Leave out student names, grades, and ID numbers. Real student work goes only into a tool CAU approves. FERPA still applies.</p></div>
         <div><h3>Check the facts</h3><p>AI can sound sure and still be wrong. Verify dates, sources, and numbers.</p></div>
         <div><h3>Stay the author</h3><p>Treat every result as a first draft. Edit it until it sounds like you.</p></div>
         <div><h3>Be open about it</h3><p>Follow CAU guidance and your course policy on AI use.</p></div>
@@ -443,7 +499,7 @@
           <h3>Getting started</h3>
           <ul class="links">
             <li><a href="https://support.claude.com/en/articles/8114491-get-started-with-claude" target="_blank" rel="noopener"><b>Get started with Claude</b><span>The official beginner guide</span></a></li>
-            <li><a href="https://support.claude.com/en/articles/8325606-what-is-the-pro-plan" target="_blank" rel="noopener"><b>What is the Pro plan?</b><span>What a paid plan adds</span></a></li>
+            <li><a href="https://support.claude.com/en/articles/8325606-what-is-the-pro-plan" target="_blank" rel="noopener"><b>What is the Pro plan?</b><span>Optional. What a paid plan adds</span></a></li>
             <li><a href="https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects" target="_blank" rel="noopener"><b>Projects</b><span>Keep one course's files and chats together</span></a></li>
           </ul>
         </div>
@@ -456,7 +512,7 @@
           </ul>
         </div>
         <div>
-          <h3>Claude in VS Code</h3>
+          <h3>Advanced: Claude in VS Code</h3>
           <ul class="links">
             <li><a href="vscode-setup.html"><b>Picture guide to setup</b><span>Every click, one step at a time</span></a></li>
             <li><a href="https://code.visualstudio.com/download" target="_blank" rel="noopener"><b>Download VS Code</b><span>Mac, Windows, and Linux</span></a></li>
@@ -505,7 +561,7 @@
         </div>
         <div class="material">
           <h3>Course Build Kit</h3>
-          <p>Modernize one course for the AI age: all the mathematics, harder, with the thinking still theirs. Start with the one-page sheet inside. CAU required syllabus statements are already included, and a real week of Calculus I is in there so you can see what comes out. Word, Overleaf, or PDF. Mac or Windows.</p>
+          <p><b>Advanced.</b> Modernize one course for the AI age: all the mathematics, harder, with the thinking still theirs. Start with the one-page sheet inside. CAU required syllabus statements are already included, and a real week of Calculus I is in there so you can see what comes out. Word, Overleaf, or PDF. Mac or Windows.</p>
           <a class="btn solid" href="materials/Course-Build-Kit.zip" download>Download the kit</a>
         </div>
         <div class="material">
@@ -545,14 +601,14 @@
   // Prompt starters. Text inside [brackets] is shown in red for people to replace.
   const PROMPTS = [
     { cat: "oct15", title: "Build a rubric",
-      text: "Make a [5]-point rubric with partial credit for this question. Students must show all work. List the most common mistakes.\n\n[paste your question and answer key]" },
-    { cat: "oct15", title: "Grade with your rubric (first pass)",
-      text: "Help me grade these answers. Use only my rubric.\n\nRUBRIC:\n[paste your rubric]\n\nFor each answer: score each rubric line, give the total, write one sentence of feedback to the student, and flag any score you are unsure about.\n\nANSWER A:\n[paste an answer with no names or ID numbers]\n\nANSWER B:\n[paste the next answer]" },
-    { cat: "oct15", title: "Fix a rubric line",
+      text: "Make a 5-point rubric with partial credit for this question. Students must show all work. List the most common mistakes.\n\n[paste your question and answer key]" },
+    { cat: "oct15", title: "AI suggests scores, you check", note: "Practice with made-up or rewritten answers until CAU approves a tool for real student work.",
+      text: "Help me grade these answers. Use only my rubric.\n\nRUBRIC:\n[paste your rubric]\n\nFor each answer: score each rubric line, give the total, write one sentence of feedback to the student, and tell me which scores you are least sure about.\n\nANSWER A:\n[paste a practice answer, with no names or ID numbers]\n\nANSWER B:\n[paste the next answer]" },
+    { cat: "oct15", title: "Fix a rubric line", note: "Use it in the same chat as your rubric.",
       text: "Item [2] is [too harsh or too generous]. [Say what should and should not earn the point.] Re-score." },
-    { cat: "oct15", title: "Remake a question",
+    { cat: "oct15", title: "Remake a question", note: "Use it in the same chat as your question, so Claude knows which one.",
       text: "Write two new versions of this question. Same skill, same difficulty. Include a strong answer for each." },
-    { cat: "oct15", title: "Make a review slide",
+    { cat: "oct15", title: "Make a review slide", note: "Same chat again. You get the words for a slide; paste them into PowerPoint or Google Slides.",
       text: "Turn this question into one review slide: the main idea, an example, and the most common mistake." },
     { cat: "workshop", title: "Let AI interview you first",
       text: "I need to [describe your task]. Before you write anything, ask me questions one at a time until you have what you need. Ask no more than 5." },
@@ -590,6 +646,7 @@
     card.dataset.cat = p.cat;
     card.innerHTML =
       `<header><h3>${escapeHtml(p.title)}</h3><span class="cat">${CAT_LABEL[p.cat]}</span></header>` +
+      (p.note ? `<p class="note">${escapeHtml(p.note)}</p>` : "") +
       `<pre>${escapeHtml(p.text).replace(/\[([^\]]+)\]/g, "<mark>[$1]</mark>")}</pre>` +
       `<button type="button" class="btn" id="copy-${i}">Copy prompt</button>`;
     card.querySelector("button").addEventListener("click", e => copyText(p.text, e.currentTarget));
@@ -604,8 +661,8 @@
       ta.value = text; document.body.appendChild(ta); ta.select();
       document.execCommand("copy"); ta.remove();
     }
-    btn.textContent = "Copied";
-    setTimeout(() => { btn.textContent = "Copy prompt"; }, 1800);
+    btn.textContent = "Copied! Now paste it into Claude";
+    setTimeout(() => { btn.textContent = "Copy prompt"; }, 3000);
   }
 
   function applyFilter(f) {
