@@ -250,6 +250,13 @@
   .src { margin-top: 14px; color: var(--stone); font-size: .88rem; }
 
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  details.earlier { margin-top: 30px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  details.earlier > summary { cursor: pointer; padding: 16px 20px; font-weight: 700; font-size: 1.05rem; list-style-position: inside; }
+  details.earlier > summary span { font-weight: 400; color: var(--stone); }
+  details.earlier[open] > summary { border-bottom: 1px solid var(--line); }
+  details.earlier .inner { padding: 0 20px 20px; }
+  details.earlier .materials { margin-top: 18px; }
+
   footer { margin-top: 64px; border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--stone); font-size: .92rem; }
   footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
@@ -290,7 +297,6 @@
         <li><a href="#compare">Compare tools</a></li>
         <li><a href="#resources">Resources</a></li>
         <li><a href="#materials">Materials</a></li>
-        <li><a href="vscode-setup.html">VS Code guide (advanced)</a></li>
       </ul>
     </nav>
   </div>
@@ -646,7 +652,9 @@
           <span class="soon">Posted after Oct 15</span>
         </div>
       </div>
-      <h3 class="mat-head">September 18: the first workshop</h3>
+      <details class="earlier">
+        <summary>Earlier session (September 18) and advanced material <span>· click to open</span></summary>
+        <div class="inner">
       <div class="materials">
         <div class="material">
           <h3>Workshop slides</h3>
@@ -664,6 +672,8 @@
           <a class="btn" href="materials/AI-Workshop-Flyer.pdf" target="_blank" rel="noopener">Open PDF</a>
         </div>
       </div>
+        </div>
+      </details>
       <p class="contact-line">Can't find something? Email <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a>.</p>
     </div>
   </section>
@@ -687,7 +697,7 @@
 <footer>
   <div class="wrap">
     <span>Clark Atlanta University, Department of Mathematical Sciences</span>
-    <span>Faculty and Staff AI Workshop, Fall 2026 · <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a></span>
+    <span>Faculty and Staff AI Workshop, Fall 2026 · <a href="mailto:ddixon1@cau.edu">ddixon1@cau.edu</a> · <a href="vscode-setup.html">VS Code guide (advanced)</a></span>
   </div>
 </footer>
 
